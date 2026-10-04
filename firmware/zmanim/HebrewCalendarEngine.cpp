@@ -10,11 +10,11 @@
 namespace siddur {
 
 HebrewCalendarEngine::HebrewCalendarEngine() {
-    // Default location: Jerusalem, Israel
-    location_.latitude = 31.7767;
-    location_.longitude = 35.2345;
-    location_.timeZoneOffsetHours = 2.0;
-    location_.isIsrael = true;
+    // Default location: Bogotá, Colombia (User Locale, Diaspora, UTC-5)
+    location_.latitude = 4.7110;
+    location_.longitude = -74.0721;
+    location_.timeZoneOffsetHours = -5.0;
+    location_.isIsrael = false;
 }
 
 void HebrewCalendarEngine::setLocation(const GeoLocation& location) {
@@ -62,11 +62,12 @@ LiturgicalInsertions HebrewCalendarEngine::getInsertions(const HDate& hdate) con
             ins.talUMatar = true;
         }
     } else {
-        // Diaspora: from approx Dec 4 (or Dec 5 before leap year) until Pesach
-        // Simplified check using Gregorian calendar:
-        bool afterDec4 = (hdate.gd_mon == 12 && hdate.gd_day >= 4);
+        // Diaspora: begins evening of Dec 4 (or Dec 5 in the year before a civil leap year) until Pesach (15 Nisan)
+        int startDay = (hdate.gd_year % 4 == 3) ? 5 : 4;
+        bool inDecAfterStart = (hdate.gd_mon == 12 && hdate.gd_day >= startDay);
         bool beforePesach = (hdate.hd_mon < 7 || (hdate.hd_mon == 7 && hdate.hd_day < 15));
-        if (afterDec4 || (hdate.gd_mon >= 1 && beforePesach)) {
+        bool inEarlyMonthsBeforePesach = (hdate.gd_mon >= 1 && hdate.gd_mon <= 5 && beforePesach);
+        if (inDecAfterStart || inEarlyMonthsBeforePesach) {
             ins.talUMatar = true;
         }
     }

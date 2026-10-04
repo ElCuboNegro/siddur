@@ -189,7 +189,37 @@ def main():
     print(f"  Shaah Zmanit (min): {shaah / 60:.2f}")
 
     assert alot_loc < sr_loc < shema_gra < tefilah_gra < chatzot < ss_loc < tzeit_loc
-    print("[OK] All calendar and solar time assertions passed successfully!")
+
+    # 4. Test Solar calculations for Bogotá, Colombia (lat 4.7110, lon -74.0721, UTC-5)
+    lat_bog, lon_bog, tz_bog = 4.7110, -74.0721, -5.0
+    sr_bog_utc, ss_bog_utc = hdate_solar_times(4, 10, 2026, lat_bog, lon_bog, 90.8333)
+    sr_bog_loc = (sr_bog_utc + int(tz_bog * 3600)) % 86400
+    ss_bog_loc = (ss_bog_utc + int(tz_bog * 3600)) % 86400
+
+    alot_bog_utc, _ = hdate_solar_times(4, 10, 2026, lat_bog, lon_bog, 106.1)
+    alot_bog_loc = (alot_bog_utc + int(tz_bog * 3600)) % 86400
+
+    _, tzeit_bog_utc = hdate_solar_times(4, 10, 2026, lat_bog, lon_bog, 98.5)
+    tzeit_bog_loc = (tzeit_bog_utc + int(tz_bog * 3600)) % 86400
+
+    day_len_bog = ss_bog_loc - sr_bog_loc
+    shaah_bog = day_len_bog / 12.0
+    shema_gra_bog = sr_bog_loc + int(3.0 * shaah_bog)
+    tefilah_gra_bog = sr_bog_loc + int(4.0 * shaah_bog)
+    chatzot_bog = sr_bog_loc + int(6.0 * shaah_bog)
+
+    print(f"Bogotá, Colombia 2026-10-04 (User Locale):")
+    print(f"  Alot HaShachar:     {sec_to_str(alot_bog_loc)}")
+    print(f"  Sunrise (Hanetz):   {sec_to_str(sr_bog_loc)}")
+    print(f"  Sof Zman Shema Gra: {sec_to_str(shema_gra_bog)}")
+    print(f"  Sof Zman Tefilah:   {sec_to_str(tefilah_gra_bog)}")
+    print(f"  Chatzot:            {sec_to_str(chatzot_bog)}")
+    print(f"  Sunset (Shkia):     {sec_to_str(ss_bog_loc)}")
+    print(f"  Tzeit HaKochavim:   {sec_to_str(tzeit_bog_loc)}")
+    print(f"  Shaah Zmanit (min): {shaah_bog / 60:.2f}")
+
+    assert alot_bog_loc < sr_bog_loc < shema_gra_bog < tefilah_gra_bog < chatzot_bog < ss_bog_loc < tzeit_bog_loc
+    print("[OK] All calendar, Jerusalem and Bogotá solar time assertions passed successfully!")
 
 if __name__ == "__main__":
     main()
