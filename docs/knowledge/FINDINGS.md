@@ -59,4 +59,13 @@ Use este bloque para nuevos hallazgos:
   2. *Modales Contextuales*: CrossPoint Reader ya posee una arquitectura de pila de actividades (`ActivityManager`), y el patrón de `DictionaryDefinitionActivity` y `EpubReaderFootnoteSelectActivity` demuestra cómo capturar toques de pantalla (`wasScreenTapped`) con regiones interactivas (`linkAtPoint`) para apilar un modal paginado con texto, traducción y navegación por botones físicos o toque.
 - **Implicación**: Ambos problemas (soporte de Nikud en pantalla e-ink y visualización de la traducción en modal al pulsar un versículo) tienen una ruta de implementación clara, determinista y alineada con la arquitectura nativa del lector.
 
+### F-006: Simulación de Escritorio (crosspoint-simulator) y Arquitectura de Doble Propósito (E-Reader General + Siddur)
+- **Fecha**: 2026-10-04
+- **Contexto**: `https://github.com/crosspoint-reader/crosspoint-simulator`, `sample-platformio-linux-wsl.ini` y `src/activities/home/HomeActivity.cpp`
+- **Hallazgo**:
+  1. *Simulador Nativo de Escritorio*: `crosspoint-simulator` permite compilar y ejecutar todo el firmware de CrossPoint Reader en la máquina host (Linux/WSL/macOS) renderizando el panel e-ink en una ventana SDL2 a resolución nativa 800×480. El perfil `[env:simulator_x4_pro]` (`-DSIMULATOR_DEVICE_X4_PRO`) emula el framebuffer de X4 Pro, toques de pantalla y gestos con el ratón, teclas físicas y Home capacitivo con el teclado, además del RTC y la batería. Reemplaza la capa `lib/hal/` sin modificar la API de alto nivel.
+  2. *Preservación Absoluta de Capacidades E-Reader*: El dispositivo debe operar como un lector de libros electrónicos universal (EPUB 2/3, TXT, XTC, cómics/manga, sincronización KOReader, catálogos OPDS y explorador de archivos en tarjeta SD). La funcionalidad de Siddur se integra como un subsistema de lectura enriquecida y portal de oraciones dinámico (accesible desde la pantalla principal, menú de aplicaciones o apertura de archivos litúrgicos), coexistiendo sin alterar ni restringir la lectura de libros comunes.
+- **Implicación**: Se acelera drásticamente el ciclo de desarrollo (inner loop) al poder depurar interfaces hebreas y modales interlineales directamente en el simulador SDL2 de escritorio, garantizando que el firmware final preserve el 100% de la funcionalidad de lectura de cualquier libro electrónico.
+
+
 
