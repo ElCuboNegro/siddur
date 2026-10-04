@@ -1,0 +1,179 @@
+{
+  "$schema": "../schema/liturgical-text.json",
+  "id": "kiddush-leil-shabbat",
+  "title_he": "קִדּוּשׁ לְלֵיל שַׁבָּת",
+  "title_es": "Kidush de la Noche de Shabat",
+  "category": "shabbat",
+  "applicability": {
+    "days_of_week": [6],
+    "min_zman": "plag_hamincha",
+    "max_zman": "alot_hashachar"
+  },
+  "sections": [
+    {
+      "id": "sec-pesukim-vaychulu",
+      "header_he": "וַיְכֻלּוּ הַשָּׁמַיִם",
+      "header_es": "Versículos de la Creación (Génesis 2:1-3)",
+      "instruction_es": "Se acostumbra recitar de pie junto a la mesa festiva con la copa de vino llena.",
+      "condition": { "rule_type": "always" },
+      "paragraphs": [
+        {
+          "id": "p-vaychulu",
+          "verses": [
+            {
+              "verse_id": "v-1",
+              "hebrew": "יוֹם הַשִּׁשִּׁי. וַיְכֻלּוּ הַשָּׁמַיִם וְהָאָרֶץ וְכָל צְבָאָם:",
+              "spanish_interlinear": "[Fue el] día sexto. Y fueron completados los cielos y la tierra y todo su ejército.",
+              "modal_details": {
+                "spanish_full": "Y fue el día sexto. Y se completaron los cielos y la tierra y todos sus ejércitos.",
+                "transliteration": "Yom hashishí. Vayjulú hashamáyim vehaáretz vejol tzevaam.",
+                "notes": "Las dos primeras palabras ('Yom Hashishi') se dicen en voz baja conectando con 'Vayjulu', cuyas iniciales hebreas forman el Tetragrámaton (Y-H-V-H).",
+                "source_reference": "Génesis 1:31 - 2:1"
+              }
+            },
+            {
+              "verse_id": "v-2",
+              "hebrew": "וַיְכַל אֱלֹהִים בַּיּוֹם הַשְּׁבִיעִי מְלַאכְתּוֹ אֲשֶׁר עָשָׂה,",
+              "spanish_interlinear": "Y concluyó Dios en el día séptimo Su labor que hizo,",
+              "modal_details": {
+                "spanish_full": "Y Dios concluyó en el séptimo día la obra que había realizado,",
+                "transliteration": "Vayejal Elohim bayom hashevií melajtó asher asá,",
+                "notes": "El cese de la Creación estableció el Shabat como pacto eterno entre el Creador y la creación.",
+                "source_reference": "Génesis 2:2"
+              }
+            },
+            {
+              "verse_id": "v-3",
+              "hebrew": "וַיִּשְׁבֹּת בַּיּוֹם הַשְּׁבִיעִי מִכָּל מְלַאכְתּוֹ אֲשֶׁר עָשָׂה:",
+              "spanish_interlinear": "y reposó en el día séptimo de toda Su labor que hizo.",
+              "modal_details": {
+                "spanish_full": "y reposó en el séptimo día de toda la obra que había hecho.",
+                "transliteration": "vayishbot bayom hashevií mikol melajtó asher asá.",
+                "notes": "El Shabat es un descanso ontológico y espiritual, no mero cansancio físico.",
+                "source_reference": "Génesis 2:2"
+              }
+            },
+            {
+              "verse_id": "v-4",
+              "hebrew": "וַיְבָרֶךְ אֱלֹהִים אֶת יוֹם הַשְּׁבִיעִי וַיְקַדֵּשׁ אֹתוֹ,",
+              "spanish_interlinear": "Y bendijo Dios al día séptimo y lo santificó,",
+              "modal_details": {
+                "spanish_full": "Y bendijo Dios al séptimo día y lo santificó,",
+                "transliteration": "Vayevárej Elohim et yom hashevií vaykadesh otó,",
+                "notes": "La santificación consiste en apartarlo de las labores cotidianas y consagrarlo al deleite espiritual.",
+                "source_reference": "Génesis 2:3"
+              }
+            },
+            {
+              "verse_id": "v-5",
+              "hebrew": "כִּי בוֹ שָׁבַת מִכָּל מְלַאכְתּוֹ אֲשֶׁר בָּרָא אֱלֹהִים לַעֲשׂוֹת:",
+              "spanish_interlinear": "porque en él reposó de toda Su labor que creó Dios para hacer.",
+              "modal_details": {
+                "spanish_full": "porque en él reposó de toda Su labor que Dios creó para que continuara haciéndose.",
+                "transliteration": "ki vo shavat mikol melajtó asher bará Elohim laasot.",
+                "notes": "'Para hacer': Dios dejó la Creación incompleta para que el ser humano sea Su socio en el Tikún Olam (reparación del mundo).",
+                "source_reference": "Génesis 2:3; Midrash Bereshit Rabá"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "sec-berachah-hagefen",
+      "header_he": "בִּרְכַּת הַגֶּפֶן",
+      "header_es": "Bendición sobre el Vino",
+      "instruction_es": "El oficiante mira la copa con vino o jugo de uva casher y pide permiso a los presentes diciendo 'Savrí maranán'.",
+      "condition": { "rule_type": "always" },
+      "paragraphs": [
+        {
+          "id": "p-hagefen",
+          "verses": [
+            {
+              "verse_id": "v-6",
+              "hebrew": "סַבְרִי מָרָנָן וְרַבָּנָן וְרַבּוֹתַי:",
+              "spanish_interlinear": "Atención mis señores y maestros y caballeros:",
+              "modal_details": {
+                "spanish_full": "Con la atención de mis señores, maestros y honorables presentes.",
+                "transliteration": "Savrí maranán verabanán verabotay.",
+                "notes": "Los presentes responden: '¡Lejayim!' (¡Por la vida!)."
+              }
+            },
+            {
+              "verse_id": "v-7",
+              "hebrew": "בָּרוּךְ אַתָּה יְהֹוָה אֱלֹהֵינוּ מֶלֶךְ הָעוֹלָם, בּוֹרֵא פְּרִי הַגָּפֶן:",
+              "spanish_interlinear": "Bendito Tú Eterno nuestro Dios Rey del universo, Creador del fruto de la vid.",
+              "modal_details": {
+                "spanish_full": "Bendito eres Tú, Señor, Dios nuestro, Rey del Universo, Creador del fruto de la vid.",
+                "transliteration": "Baruj Atá Adonay Eloheynu Melej haolam, boré perí hagáfen.",
+                "notes": "Los presentes responden 'Amén'. No se debe interrumpir hablando hasta haber bebido de la copa.",
+                "source_reference": "Talmud Berajot 35a"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "sec-berachah-kiddush",
+      "header_he": "בִּרְכַּת קִדּוּשׁ הַיּוֹם",
+      "header_es": "Consagración del Shabat",
+      "instruction_es": "Bendición principal de santificación del día.",
+      "condition": { "rule_type": "always" },
+      "paragraphs": [
+        {
+          "id": "p-kiddush-body",
+          "verses": [
+            {
+              "verse_id": "v-8",
+              "hebrew": "בָּרוּךְ אַתָּה יְהֹוָה אֱלֹהֵינוּ מֶלֶךְ הָעוֹלָם,",
+              "spanish_interlinear": "Bendito Tú Eterno nuestro Dios Rey del universo,",
+              "modal_details": {
+                "spanish_full": "Bendito eres Tú, Señor, Dios nuestro, Rey del Universo,",
+                "transliteration": "Baruj Atá Adonay Eloheynu Melej haolam,"
+              }
+            },
+            {
+              "verse_id": "v-9",
+              "hebrew": "אֲשֶׁר קִדְּשָׁנוּ בְּמִצְוֹתָיו וְרָצָה בָנוּ,",
+              "spanish_interlinear": "que nos santificó con Sus mandamientos y se complació en nosotros,",
+              "modal_details": {
+                "spanish_full": "que nos ha santificado mediante Sus mandamientos y se ha complacido en nosotros,",
+                "transliteration": "asher kideshanu bemitzvotav veratza vanu,"
+              }
+            },
+            {
+              "verse_id": "v-10",
+              "hebrew": "וְשַׁבַּת קָדְשׁוֹ בְּאַהֲבָה וּבְרָצוֹן הִנְחִילָנוּ, זִכָּרוֹן לְמַעֲשֵׂה בְרֵאשִׁית.",
+              "spanish_interlinear": "y Su santo Shabat con amor y agrado nos legó, recuerdo de la obra de la Creación.",
+              "modal_details": {
+                "spanish_full": "y con amor y agrado nos otorgó en herencia Su santo Shabat, en recuerdo de la obra de la Creación.",
+                "transliteration": "veshabat kodshó beahavá uveratzón hinjilanu, zikaron lemaasé vereshit."
+              }
+            },
+            {
+              "verse_id": "v-11",
+              "hebrew": "כִּי הוּא יוֹם תְּחִלָּה לְמִקְרָאֵי קֹדֶשׁ, זֵכֶר לִיצִיאַת מִצְרָיִם.",
+              "spanish_interlinear": "Pues es el primer día de las convocaciones santas, recuerdo de la salida de Egipto.",
+              "modal_details": {
+                "spanish_full": "Pues es el primero de los días señalados como sagrados, memorial del éxodo de Egipto.",
+                "transliteration": "ki hu yom tejilá lemikraey kódesh, zejer litziat Mitzráyim.",
+                "notes": "El Shabat aúna dos pilares de la fe judía: la Creación divina del cosmos y la Redención histórica del pueblo de la esclavitud."
+              }
+            },
+            {
+              "verse_id": "v-12",
+              "hebrew": "בָּרוּךְ אַתָּה יְהֹוָה, מְקַדֵּשׁ הַשַּׁבָּת:",
+              "spanish_interlinear": "Bendito Tú Eterno, que santifica el Shabat.",
+              "modal_details": {
+                "spanish_full": "Bendito eres Tú, Señor, que santifica el Shabat.",
+                "transliteration": "Baruj Atá Adonay, mekadesh hashabat.",
+                "notes": "Todos responden 'Amén'. El oficiante se sienta y bebe la mayoría de un reviít (aprox. 44 ml o más) y reparte a todos los comensales."
+              }
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

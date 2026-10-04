@@ -9,7 +9,7 @@
         "hooks": [
           {
             "type": "command",
-            "statusMessage": "GitOps Gate — checking for forbidden git operations...",
+            "statusMessage": "GitOps Gate \u2014 checking for forbidden git operations...",
             "command": "cornerstone hook gitops-gate"
           }
         ]
@@ -19,7 +19,7 @@
         "hooks": [
           {
             "type": "command",
-            "statusMessage": "ADR Gate — checking architectural mandate...",
+            "statusMessage": "ADR Gate \u2014 checking architectural mandate...",
             "command": "cornerstone hook --env CORNERSTONE_ADR_PATH=docs/adr tools/adr_gate.py"
           }
         ]
@@ -29,7 +29,7 @@
         "hooks": [
           {
             "type": "command",
-            "statusMessage": "TDD Gate — verifying test coverage exists...",
+            "statusMessage": "TDD Gate \u2014 verifying test coverage exists...",
             "command": "cornerstone hook .claude/hooks/tdd-gate.sh"
           }
         ]
@@ -39,7 +39,7 @@
         "hooks": [
           {
             "type": "command",
-            "statusMessage": "KDB-first Gate — checking corpus consultation (ADR-0126)...",
+            "statusMessage": "KDB-first Gate \u2014 checking corpus consultation (ADR-0126)...",
             "command": "cornerstone hook --optional --env-default KDB_FIRST_MODE=hard tools/kdb_first_gate.py --check"
           }
         ]
@@ -60,7 +60,7 @@
         "hooks": [
           {
             "type": "command",
-            "statusMessage": "KDB recall — fetching relevant org knowledge...",
+            "statusMessage": "KDB recall \u2014 fetching relevant org knowledge...",
             "command": "cornerstone hook --optional kdb recall --prompt-stdin"
           }
         ]
@@ -125,5 +125,8 @@
   },
   "enabledPlugins": {
     "siddur-skills@local": true
-  }
+  },
+  "claudeMdExcludes": [
+    "C:\\Users\\ROG STRIX\\Desktop\\siddur-init-monorepo-and-prd\\input\\crosspoint-reader\\CLAUDE.md"
+  ]
 }

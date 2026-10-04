@@ -1,0 +1,110 @@
+{
+  "$schema": "../schema/liturgical-text.json",
+  "id": "shema-yisrael",
+  "title_he": "קְרִיאַת שְׁמַע",
+  "title_es": "Lectura del Shemá Israel",
+  "category": "daily_shacharit",
+  "applicability": {
+    "days_of_week": [1, 2, 3, 4, 5, 6, 7],
+    "min_zman": "misheyakir",
+    "max_zman": "sof_zman_shema"
+  },
+  "sections": [
+    {
+      "id": "sec-shema-core",
+      "header_he": "שְׁמַע יִשְׂרָאֵל",
+      "header_es": "Aceptación del Yugo del Reino Celestial",
+      "instruction_es": "Se cubren los ojos con la mano derecha al pronunciar el primer versículo, concentrándose en la Unicidad Absoluta de Dios.",
+      "condition": { "rule_type": "always" },
+      "paragraphs": [
+        {
+          "id": "p-shema-proclamation",
+          "verses": [
+            {
+              "verse_id": "v-shema-1",
+              "hebrew": "שְׁמַע יִשְׂרָאֵל, יְהֹוָה אֱלֹהֵינוּ, יְהֹוָה אֶחָד:",
+              "spanish_interlinear": "Escucha Israel, el Eterno [es] nuestro Dios, el Eterno [es] Uno.",
+              "modal_details": {
+                "spanish_full": "¡Escucha, oh Israel! El Eterno es nuestro Dios, el Eterno es Uno y Único.",
+                "transliteration": "Shemá Yisrael, Adonay Eloheynu, Adonay Ejad.",
+                "notes": "Precepto bíblico de declarar la unidad de Dios dos veces al día. Se prolonga ligeramente la última letra Dálet de 'Ejad' reconociendo la soberanía divina en los cuatro puntos cardinales, el cielo y la tierra.",
+                "source_reference": "Deuteronomio 6:4"
+              }
+            },
+            {
+              "verse_id": "v-shema-2",
+              "hebrew": "בָּרוּךְ שֵׁם כְּבוֹד מַלְכוּתוֹ לְעוֹלָם וָעֶד:",
+              "spanish_interlinear": "Bendito [sea el] Nombre de la gloria de Su reino por siempre jamás.",
+              "modal_details": {
+                "spanish_full": "Bendito sea el Nombre del esplendor de Su Reino por toda la eternidad.",
+                "transliteration": "Baruj shem kevod maljutó leolam vaed.",
+                "notes": "Se pronuncia en susurro todo el año (excepto en Yom Kipur que se proclama en voz alta), pues es la alabanza que recitan los ángeles ministeriales.",
+                "source_reference": "Talmud Pesajim 56a"
+              }
+            }
+          ]
+        },
+        {
+          "id": "p-veahavta",
+          "verses": [
+            {
+              "verse_id": "v-shema-3",
+              "hebrew": "וְאָהַבְתָּ אֵת יְהֹוָה אֱלֹהֶיךָ, בְּכָל לְבָבְךָ וּבְכָל נַפְשְׁךָ וּבְכָל מְאֹדֶךָ:",
+              "spanish_interlinear": "Y amarás al Eterno tu Dios, con todo tu corazón y con toda tu alma y con todos tus recursos:",
+              "modal_details": {
+                "spanish_full": "Amarás al Señor tu Dios con todo tu corazón, con toda tu alma y con todas tus fuerzas.",
+                "transliteration": "Veahavtá et Adonay Eloheja, bejol levavejá uvjol nafshejá uvjol meodéja.",
+                "notes": "'Con todo tu corazón': con ambas inclinaciones (el buen impulso y la mala inclinación canalizada al bien). 'Con toda tu alma': incluso si exige la vida. 'Con todos tus recursos': con todos tus bienes materiales.",
+                "source_reference": "Deuteronomio 6:5; Mishná Berajot 9:5"
+              }
+            },
+            {
+              "verse_id": "v-shema-4",
+              "hebrew": "וְהָיוּ הַדְּבָרִים הָאֵלֶּה אֲשֶׁר אָנֹכִי מְצַוְּךָ הַיּוֹם עַל לְבָבֶךָ:",
+              "spanish_interlinear": "Y estarán estas palabras que Yo te ordeno hoy sobre tu corazón:",
+              "modal_details": {
+                "spanish_full": "Y estas palabras que hoy te encomiendo permanecerán grabadas en tu corazón.",
+                "transliteration": "Vehayú hadevarim haéleh asher anojí metzavejá hayom al levavéja.",
+                "notes": "'Hoy': que cada día los preceptos se sientan frescos y renovados, como si hubiesen sido entregados hoy mismo.",
+                "source_reference": "Deuteronomio 6:6; Rashi"
+              }
+            },
+            {
+              "verse_id": "v-shema-5",
+              "hebrew": "וְשִׁנַּנְתָּם לְבָנֶיךָ וְדִבַּרְתָּ בָּם, בְּשִׁבְתְּךָ בְּבֵיתֶךָ וּבְלֶכְתְּךָ בַדֶּרֶךְ וּבְשָׁכְבְּךָ וּבְקוּמֶךָ:",
+              "spanish_interlinear": "y las enseñarás con esmero a tus hijos y hablarás de ellas, en tu morar en tu casa y en tu andar por el camino y al acostarte y al levantarte:",
+              "modal_details": {
+                "spanish_full": "Las inculcarás con esmero a tus hijos y hablarás de ellas, cuando estés en tu casa y cuando andes por el camino, al acostarte y al levantarte.",
+                "transliteration": "Veshinantam levaneja vedibartá bam, beshivtejá beveytéja uvlejtejá vadérej uvshojbejá uvkumeja.",
+                "notes": "'Al acostarte y al levantarte': de aquí deriva la obligación temporal de recitar el Shemá por la noche (Arvit) y por la mañana (Shajarit).",
+                "source_reference": "Deuteronomio 6:7"
+              }
+            },
+            {
+              "verse_id": "v-shema-6",
+              "hebrew": "וּקְשַׁרְתָּם לְאוֹת עַל יָדֶךָ, וְהָיוּ לְטֹטָפֹת בֵּין עֵינֶיךָ:",
+              "spanish_interlinear": "Y las atarás por señal sobre tu brazo, y serán por recordatorio frontal entre tus ojos:",
+              "modal_details": {
+                "spanish_full": "Las atarás como señal sobre tu brazo y servirán de emblema frontal entre tus ojos.",
+                "transliteration": "Ukeshartam leot al yadéja, vehayú letotafot beyn eynéja.",
+                "notes": "Mandamiento de los Tefilín (filacterias): Tefilín de la mano frente al corazón (las emociones) y de la cabeza sobre el cerebro (el intelecto).",
+                "source_reference": "Deuteronomio 6:8"
+              }
+            },
+            {
+              "verse_id": "v-shema-7",
+              "hebrew": "וּכְתַבְתָּם עַל מְזֻזוֹת בֵּיתֶךָ וּבִשְׁעָרֶיךָ:",
+              "spanish_interlinear": "y las escribirás sobre las jambas de tu casa y en tus portales.",
+              "modal_details": {
+                "spanish_full": "Y las inscribirás en los postes de las puertas de tu morada y en tus portales.",
+                "transliteration": "Ujetavtam al mezuzot beytéja uvish'aréja.",
+                "notes": "Mandamiento de fijar la Mezuzá en el tercio superior de la jamba derecha de cada estancia.",
+                "source_reference": "Deuteronomio 6:9"
+              }
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

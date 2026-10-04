@@ -44,3 +44,5 @@ Thumbs.db
 # Input / dumps / artifacts
 input/
 output/
+docs/knowledge/*.json
+docs/knowledge/*.dot

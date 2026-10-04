@@ -1,0 +1,163 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/ElCuboNegro/siddur/schema/liturgical-text.json",
+  "title": "LiturgicalText",
+  "description": "Schema for structured Hebrew liturgical texts with nikud, Spanish interlineal translation, and time-aware insertion rules.",
+  "type": "object",
+  "required": ["id", "title_he", "title_es", "category", "sections"],
+  "properties": {
+    "id": {
+      "type": "string",
+      "description": "Unique identifier for the prayer or blessing, e.g. 'birkat-hamazon'"
+    },
+    "title_he": {
+      "type": "string",
+      "description": "Hebrew title with nikud"
+    },
+    "title_es": {
+      "type": "string",
+      "description": "Spanish title"
+    },
+    "category": {
+      "type": "string",
+      "enum": ["daily_shacharit", "daily_mincha", "daily_arvit", "shabbat", "festivals", "berachot", "special"],
+      "description": "Liturgical category"
+    },
+    "applicability": {
+      "type": "object",
+      "description": "Time-aware rules for when this prayer applies",
+      "properties": {
+        "days_of_week": {
+          "type": "array",
+          "items": { "type": "integer", "minimum": 1, "maximum": 7 },
+          "description": "1 = Sunday, 7 = Saturday (Shabbat)"
+        },
+        "hebrew_months": {
+          "type": "array",
+          "items": { "type": "integer", "minimum": 1, "maximum": 14 }
+        },
+        "holidays": {
+          "type": "array",
+          "items": { "type": "string" }
+        },
+        "min_zman": {
+          "type": "string",
+          "description": "Earliest zman when this prayer can be said (e.g. 'alot_hashachar', 'mincha_gedola', 'plag_hamincha')"
+        },
+        "max_zman": {
+          "type": "string",
+          "description": "Latest zman when this prayer can be said (e.g. 'chatzot_hayom', 'shkia', 'tzeit_hakochavim')"
+        }
+      }
+    },
+    "sections": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/Section"
+      }
+    }
+  },
+  "$defs": {
+    "Section": {
+      "type": "object",
+      "required": ["id", "paragraphs"],
+      "properties": {
+        "id": { "type": "string" },
+        "header_he": { "type": "string" },
+        "header_es": { "type": "string" },
+        "instruction_es": { "type": "string" },
+        "condition": {
+          "$ref": "#/$defs/InsertionCondition"
+        },
+        "paragraphs": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/Paragraph"
+          }
+        }
+      }
+    },
+    "Paragraph": {
+      "type": "object",
+      "required": ["id", "verses"],
+      "properties": {
+        "id": { "type": "string" },
+        "condition": {
+          "$ref": "#/$defs/InsertionCondition"
+        },
+        "verses": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/Verse"
+          }
+        }
+      }
+    },
+    "Verse": {
+      "type": "object",
+      "required": ["verse_id", "hebrew", "spanish_interlinear"],
+      "properties": {
+        "verse_id": {
+          "type": "string",
+          "description": "Unique identifier for touch click target"
+        },
+        "hebrew": {
+          "type": "string",
+          "description": "Full Hebrew text with nikud"
+        },
+        "spanish_interlinear": {
+          "type": "string",
+          "description": "Spanish word-by-word or phrase-by-phrase literal translation"
+        },
+        "modal_details": {
+          "type": "object",
+          "description": "Detailed commentary or explanation displayed when verse is tapped",
+          "properties": {
+            "spanish_full": {
+              "type": "string",
+              "description": "Idiomatic, fluent Spanish translation of the complete verse"
+            },
+            "transliteration": {
+              "type": "string",
+              "description": "Phonetic transliteration in Latin alphabet"
+            },
+            "notes": {
+              "type": "string",
+              "description": "Halachic or contextual notes (e.g. kavanah focus, physical action required)"
+            },
+            "source_reference": {
+              "type": "string",
+              "description": "Biblical/Talmudic source citation, e.g. 'Deuteronomio 6:4'"
+            }
+          }
+        }
+      }
+    },
+    "InsertionCondition": {
+      "type": "object",
+      "description": "Condition for dynamic liturgical inclusion or omission",
+      "properties": {
+        "rule_type": {
+          "type": "string",
+          "enum": [
+            "always",
+            "shabbat_only",
+            "weekday_only",
+            "rosh_chodesh",
+            "chanukah",
+            "purim",
+            "yaaleh_veyavo",
+            "al_hanissim",
+            "mashiv_haruach",
+            "morid_hatal",
+            "tal_umatar",
+            "barech_aleinu",
+            "tachanun_omitted",
+            "aseret_yemei_teshuvah"
+          ]
+        },
+        "description": { "type": "string" }
+      }
+    }
+  }
+}

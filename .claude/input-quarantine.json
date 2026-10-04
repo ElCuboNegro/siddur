@@ -1,0 +1,32 @@
+{
+  "schema": 1,
+  "generated_by": "tools/input_quarantine.py",
+  "adr": "0189",
+  "artifacts": [
+    {
+      "path": "input/crosspoint-reader/AGENTS.md",
+      "kind": "memory",
+      "name": null,
+      "qualified": null
+    },
+    {
+      "path": "input/crosspoint-reader/CLAUDE.md",
+      "kind": "memory",
+      "name": null,
+      "qualified": null
+    },
+    {
+      "path": "input/crosspoint-reader/freeink-sdk/libs/assets/Icons/lucide/.github/copilot-instructions.md",
+      "kind": "vendor-rules",
+      "name": null,
+      "qualified": null
+    }
+  ],
+  "managed": {
+    "skillOverrides": [],
+    "deny": [],
+    "claudeMdExcludes": [
+      "C:\\Users\\ROG STRIX\\Desktop\\siddur-init-monorepo-and-prd\\input\\crosspoint-reader\\CLAUDE.md"
+    ]
+  }
+}
