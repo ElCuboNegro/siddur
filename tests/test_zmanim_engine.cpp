@@ -123,11 +123,91 @@ void testZmanimCalculations() {
     std::cout << "  ✓ Zmanim calculations & recommendations assertions passed.\n";
 }
 
+void testUserLocationBogotaColombia() {
+    std::cout << "[TEST] Running testUserLocationBogotaColombia (User Environment Awareness)...\n";
+    HebrewCalendarEngine engine; // Defaults to Bogota, Colombia
+
+    const GeoLocation& loc = engine.getLocation();
+    std::cout << "  Default Location: Lat=" << loc.latitude << ", Lon=" << loc.longitude 
+              << ", TZ=" << loc.timeZoneOffsetHours << ", isIsrael=" << loc.isIsrael << "\n";
+    assert(loc.isIsrael == false);
+    assert(loc.timeZoneOffsetHours == -5.0);
+
+    // Compute for today: 2026-10-04 (User current local date)
+    ZmanimDay z = engine.computeZmanim(4, 10, 2026);
+    std::cout << "  Bogotá Zmanim for today (2026-10-04):\n";
+    std::cout << "    Alot HaShachar:     " << HebrewCalendarEngine::formatTime(z.alotHashacharSec) << "\n";
+    std::cout << "    Misheyakir:         " << HebrewCalendarEngine::formatTime(z.misheyakirSec) << "\n";
+    std::cout << "    Sunrise (Hanetz):   " << HebrewCalendarEngine::formatTime(z.sunriseSec) << "\n";
+    std::cout << "    Sof Zman Shema Gra: " << HebrewCalendarEngine::formatTime(z.sofZmanShemaGraSec) << "\n";
+    std::cout << "    Sof Zman Tefilah:   " << HebrewCalendarEngine::formatTime(z.sofZmanTefilahGraSec) << "\n";
+    std::cout << "    Chatzot:            " << HebrewCalendarEngine::formatTime(z.chatzotSec) << "\n";
+    std::cout << "    Mincha Gedola:      " << HebrewCalendarEngine::formatTime(z.minchaGedolaSec) << "\n";
+    std::cout << "    Sunset (Shkia):     " << HebrewCalendarEngine::formatTime(z.sunsetSec) << "\n";
+    std::cout << "    Tzeit HaKochavim:   " << HebrewCalendarEngine::formatTime(z.tzeitHaKochavimSec) << "\n";
+
+    // Monotonicity assertions
+    assert(z.alotHashacharSec < z.sunriseSec);
+    assert(z.sunriseSec < z.chatzotSec);
+    assert(z.chatzotSec < z.sunsetSec);
+    assert(z.sunsetSec < z.tzeitHaKochavimSec);
+
+    // Astronomical reality check for Bogota (near equator ~4.7°N, UTC-5):
+    // Sunrise should be around 05:40 - 05:55 local time
+    int sunriseHour = z.sunriseSec / 3600;
+    assert(sunriseHour >= 5 && sunriseHour <= 6);
+
+    // Test recommendation for user's exact current local time: 09:34 AM
+    HDate h = engine.computeDate(4, 10, 2026);
+    int currentTimeSec = 9 * 3600 + 34 * 60; // 09:34:00
+    RecommendedPrayer rec = engine.recommendPrayer(h, z, currentTimeSec);
+    std::cout << "  At 09:34 AM in Bogotá, Recommended prayer is: ";
+    if (rec == RecommendedPrayer::Shacharit) std::cout << "Shacharit (Correct!)\n";
+    else std::cout << "Other\n";
+    assert(rec == RecommendedPrayer::Shacharit);
+
+    std::cout << "  ✓ Bogota, Colombia location & real-time assertions passed.\n";
+}
+
+void testDiasporaVsIsraelRules() {
+    std::cout << "[TEST] Running testDiasporaVsIsraelRules (Tal UMatar & Diaspora customs)...\n";
+    HebrewCalendarEngine engineIsrael;
+    engineIsrael.setLocation({31.7767, 35.2345, 2.0, true}); // Jerusalem
+
+    HebrewCalendarEngine engineDiaspora;
+    engineDiaspora.setLocation({4.7110, -74.0721, -5.0, false}); // Bogota, Colombia
+
+    // Test on 10 Cheshvan 5786 (November 1, 2025):
+    // In Israel: Tal UMatar started on 7 Cheshvan -> TRUE
+    // In Diaspora: Tal UMatar has NOT started yet (starts Dec 4) -> FALSE
+    HDate hCheshvan10 = engineIsrael.computeDate(1, 11, 2025);
+    
+    LiturgicalInsertions insIsrael = engineIsrael.getInsertions(hCheshvan10);
+    LiturgicalInsertions insDiaspora = engineDiaspora.getInsertions(hCheshvan10);
+
+    std::cout << "  10 Cheshvan Tal UMatar check:\n";
+    std::cout << "    Israel:   talUMatar=" << insIsrael.talUMatar << " (expected 1)\n";
+    std::cout << "    Diaspora: talUMatar=" << insDiaspora.talUMatar << " (expected 0)\n";
+
+    assert(insIsrael.talUMatar == true);
+    assert(insDiaspora.talUMatar == false);
+
+    // Test on 15 December 2025:
+    // Both Israel and Diaspora must have talUMatar == true
+    HDate hDec15 = engineIsrael.computeDate(15, 12, 2025);
+    assert(engineIsrael.getInsertions(hDec15).talUMatar == true);
+    assert(engineDiaspora.getInsertions(hDec15).talUMatar == true);
+
+    std::cout << "  ✓ Diaspora vs Israel halachic distinctions passed.\n";
+}
+
 int main() {
     std::cout << "=== HebrewCalendarEngine & Zmanim Verification Test ===\n";
     testDateConversion();
     testLiturgicalInsertions();
     testZmanimCalculations();
+    testUserLocationBogotaColombia();
+    testDiasporaVsIsraelRules();
     std::cout << "=== ALL TESTS PASSED SUCCESSFULLY! ===\n";
     return 0;
 }

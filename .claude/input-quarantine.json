@@ -32,8 +32,8 @@
     "skillOverrides": [],
     "deny": [],
     "claudeMdExcludes": [
-      "C:\\Users\\ROG STRIX\\Desktop\\siddur-simulator-and-ebook-integration\\input\\crosspoint-reader\\CLAUDE.md",
-      "C:\\Users\\ROG STRIX\\Desktop\\siddur-simulator-and-ebook-integration\\input\\crosspoint-simulator\\CLAUDE.md"
+      "C:\\Users\\ROG STRIX\\Desktop\\siddur\\input\\crosspoint-reader\\CLAUDE.md",
+      "C:\\Users\\ROG STRIX\\Desktop\\siddur\\input\\crosspoint-simulator\\CLAUDE.md"
     ]
   }
 }

@@ -20,3 +20,13 @@
 4. **Log de Aprendizaje y Hallazgos:**
    - Registro en `docs/knowledge/FINDINGS.md` (F-006).
    - Actualización en `docs/knowledge/learning_log.md`.
+5. **Conciencia de Ubicación del Usuario y Reglas de Diáspora:**
+   - Incorporación del módulo `firmware/zmanim/LocationProfile.h` y `.cpp` con preajustes de ciudades, estableciendo como predeterminado **Bogotá, Colombia** (`Lat: 4.7110° N`, `Lon: -74.0721° W`, `UTC-5.0`, `isIsrael = false`).
+   - Corrección y validación de las reglas halájicas de la Diáspora (inicio de *Tal UMatar* en la noche del 4 de diciembre vs 7 de Jeshván en Israel, y 2do día de Yom Tov en Diáspora).
+6. **Implementación de `SiddurActivity` y Verificación:**
+   - Creación de `firmware/activities/SiddurActivity.h` y `.cpp` con mapeo de regiones táctiles (`VerseTouchRegion`), recomendación dinámica de rezos según hora local y activación del modal de versículo.
+   - Suite de pruebas completa: `tests/test_zmanim_engine.cpp` y `tests/test_siddur_activity.cpp` (100% aprobadas en C++ y Python).
+7. **Pipeline de Ingestión en Kedro:**
+   - Construcción del proyecto independiente `siddur-pipeline` con catálogo de datos, nodos de limpieza de nikud, transliteración fonética adaptada al español, alineación interlineal y validación con `jsonschema`.
+8. **Especificación Completa de Diseño UX:**
+   - Generación del documento de arquitectura UX para pantalla e-ink 800×480 en `ux_design_specification.md`.
