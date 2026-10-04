@@ -16,10 +16,10 @@ jobs:
     name: Governance Gate (ADR-0159)
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
         with:
           fetch-depth: 0
-      - uses: actions/setup-python@v5
+      - uses: actions/setup-python@v7
         with:
           python-version: "3.11"
       - name: Governance gate (self-resolved merge-base; never trusts caller range)
@@ -38,12 +38,12 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
         with:
           fetch-depth: 0
 
       - name: Set up Python
-        uses: actions/setup-python@v5
+        uses: actions/setup-python@v7
         with:
           python-version: "{{cookiecutter.python_version}}"
 
@@ -94,9 +94,9 @@ jobs:
     runs-on: ubuntu-latest
     if: github.event_name == 'pull_request'
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
       - name: Set up Python
-        uses: actions/setup-python@v5
+        uses: actions/setup-python@v7
         with:
           python-version: "{{cookiecutter.python_version}}"
       - name: Install cornerstone
@@ -116,11 +116,11 @@ jobs:
     # A version bump is a release concern → enforce only when targeting main.
     if: github.base_ref == 'main' || github.ref == 'refs/heads/main'
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
         with:
           fetch-depth: 0
       - name: Set up Python
-        uses: actions/setup-python@v5
+        uses: actions/setup-python@v7
         with:
           python-version: "{{cookiecutter.python_version}}"
       - name: Install cornerstone
@@ -149,11 +149,11 @@ jobs:
     name: Commit Gate
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
         with:
           fetch-depth: 0  # hace falta el commit real del PR, no solo el merge ref
       - name: Set up Python
-        uses: actions/setup-python@v5
+        uses: actions/setup-python@v7
         with:
           python-version: "{{cookiecutter.python_version}}"
       - name: Install cornerstone
@@ -177,11 +177,11 @@ jobs:
     name: BDD Gate — archaeology output must have feature files
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
         with:
           fetch-depth: 0
       - name: Set up Python
-        uses: actions/setup-python@v5
+        uses: actions/setup-python@v7
         with:
           python-version: "{{cookiecutter.python_version}}"
       - name: Install pytest-bdd
@@ -205,7 +205,7 @@ jobs:
     if: ${{ vars.SONAR_HOST_URL != '' }}
 
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
         with:
           fetch-depth: 0
 
@@ -237,7 +237,7 @@ jobs:
 
       - name: SonarQube Scan
         if: steps.provision.outputs.enabled == 'true'
-        uses: SonarSource/sonarqube-scan-action@v6
+        uses: SonarSource/sonarqube-scan-action@v8
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
           SONAR_HOST_URL: ${{ vars.SONAR_HOST_URL }}
