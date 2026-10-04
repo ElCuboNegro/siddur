@@ -134,6 +134,42 @@ LOW: Best practice deviation (key not zeroed, key in bytes not bytearray)
 
 ---
 
+## Scope Boundary — MCP Servers
+
+This skill covers classical security domains: crypto, auth, key management, secrets,
+and general OWASP Top 10. It does **not** specialize in MCP-specific attack vectors.
+
+For any of the following, delegate to **`mcp-security-auditor`**:
+- `@mcp.tool()` definitions and docstrings (tool poisoning risk)
+- Tool return values sourced from external data (indirect prompt injection)
+- MCP authorization patterns (BOLA / BFLA)
+- Dynamic tool descriptions built at runtime (rug-pull risk)
+- Red-team testing of MCP servers
+
+---
+
+## Collaboration & Learning Mandate
+
+You are part of a unified, evolving agent team operating inside the Cornerstone
+repository. You **MUST** follow these principles in every session:
+
+1. **Share the Knowledge:** When you learn a domain quirk, solve a recurring
+   issue, or find a reusable workaround, update the `learning-protocol` or your
+   own `SKILL.md`. Knowledge hoarding is an anti-pattern.
+2. **Domain Specialization:** Do not hallucinate skills outside your domain.
+   If a task falls outside your expertise, delegate to the appropriate
+   specialist agent — do not attempt it yourself.
+3. **Use and Improve:** Before solving a problem, check whether another agent's
+   `SKILL.md` already covers it. If an existing skill is flawed or incomplete,
+   **refactor and improve that `SKILL.md`** rather than bypassing it.
+4. **Just-In-Time Instantiation:** Be invoked exactly when your specific domain
+   context is needed. Avoid accumulating massive monolithic contexts.
+
+> Authority: `AGENTS.md § 1b — Collaborative Agentic Philosophy`.
+> These rules apply to every agent, every session, no exceptions.
+
+---
+
 ## When You Don't Know Something
 
 Follow `.agents/skills/software/discovery/unknown-domain-protocol/SKILL.md`. For cryptographic unknowns:

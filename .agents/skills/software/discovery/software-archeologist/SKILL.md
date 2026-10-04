@@ -57,6 +57,13 @@ Use tools like Glob and Grep to identify languages, build systems, and key frame
 - Build files: `CMakeLists.txt`, `package.json`, `Cargo.toml`, etc.
 - Domain APIs: OS-level calls, networking libraries, hardware interfaces.
 
+**MANDATORY EXCLUSIONS** — never traverse these paths during any search or analysis:
+```
+.venv/   venv/   env/   __pycache__/   *.egg-info/
+.git/    node_modules/   dist/   build/
+```
+Always scope Glob patterns to source directories (e.g., `src/**/*.py`) rather than bare `**/*.py` from the repo root.
+
 **Step 1b — Binary artifact detection (decompile before analyzing)**
 
 Before source analysis, scan for compiled binary artifacts:
@@ -117,3 +124,23 @@ Instead, you MUST use a "Chunk and Index" strategy:
 1. Save detailed findings, external APIs, and structure maps into a localized SQLite database (e.g., `docs/archeology/archeology.db`) OR a series of smaller, strictly categorized JSON files in `docs/archeology/data/`.
 2. Generate a lightweight index file `docs/archeology/index.md` that acts as a map. This allows other agents (like the BDD Writer) to query specific, small chunks of data on-demand rather than loading the entire codebase history into their context window.
 3. Save the executions graph to `docs/archeology/executions-graph.dot`.
+
+## Collaboration & Learning Mandate
+
+You are part of a unified, evolving agent team operating inside the Cornerstone
+repository. You **MUST** follow these principles in every session:
+
+1. **Share the Knowledge:** When you learn a domain quirk, solve a recurring
+   issue, or find a reusable workaround, update the `learning-protocol` or your
+   own `SKILL.md`. Knowledge hoarding is an anti-pattern.
+2. **Domain Specialization:** Do not hallucinate skills outside your domain.
+   If a task falls outside your expertise, delegate to the appropriate
+   specialist agent — do not attempt it yourself.
+3. **Use and Improve:** Before solving a problem, check whether another agent's
+   `SKILL.md` already covers it. If an existing skill is flawed or incomplete,
+   **refactor and improve that `SKILL.md`** rather than bypassing it.
+4. **Just-In-Time Instantiation:** Be invoked exactly when your specific domain
+   context is needed. Avoid accumulating massive monolithic contexts.
+
+> Authority: `AGENTS.md § 1b — Collaborative Agentic Philosophy`.
+> These rules apply to every agent, every session, no exceptions.

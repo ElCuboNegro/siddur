@@ -40,7 +40,7 @@ If working inside a project with `mkdocs.yml`:
 - Are you using Material for MkDocs specific extensions (admonitions, content tabs, code blocks)?
 
 **Step 3 — Drafting/Updating**
-- Ensure exact spelling and consistent terminology (e.g., "Agentic CI").
+- Ensure exact spelling and consistent terminology (e.g., "Agentic CI", "SQUIT").
 - Use Mermaid diagrams (````mermaid`) to explain complex architectures.
 - Validate that all code snippets are accurate and tested.
 - **Micro-Documentation Mandate:** You must pass by every file, function, class, and critical block, doing your best job to explain HOW and WHY things were made.

@@ -37,37 +37,6 @@ Numbering is sequential, zero-padded to 4 digits: `ADR-0001`, `ADR-0002`, etc.
 
 ---
 
-## Reserve-First Numbering Protocol (mandatory on concurrent branches)
-
-ADR numbers must be reserved on the `adrs` orphan branch **before** writing the full document.
-The `adrs` branch is the mutex — git's fast-forward-only push rule makes the reservation atomic.
-
-```bash
-# Step 1 — open a working-tree-safe worktree on the ledger branch
-git worktree add /tmp/adrs-ledger adrs
-
-# Step 2 — claim the number with a placeholder
-NEXT=$(ls /tmp/adrs-ledger/docs/adr/ADR-*.md 2>/dev/null \
-       | grep -oP 'ADR-\K\d+' | sort -n | tail -1 | xargs -I{} printf '%04d' $(({} + 1)))
-echo "# ADR-${NEXT} — reserved" \
-  > /tmp/adrs-ledger/docs/adr/ADR-${NEXT}-<kebab-title>.md
-git -C /tmp/adrs-ledger add docs/adr/ADR-${NEXT}-<kebab-title>.md
-git -C /tmp/adrs-ledger commit --no-verify \
-  -m "chore: reserve ADR-${NEXT} — <title>"
-
-# Step 3 — push immediately; rejection = number taken, bump NEXT and retry
-git push origin adrs
-
-# Step 4 — clean up and write the full ADR on your feature branch
-git worktree remove /tmp/adrs-ledger
-```
-
-Then write `docs/adr/ADR-${NEXT}-<kebab-title>.md` on your feature branch with the full content.
-
-**Recovery on rejection:** if `git push origin adrs` is rejected (non-fast-forward), someone else claimed the number first. Increment `NEXT`, rename the placeholder, amend the commit, and push again.
-
----
-
 ## ADR Template
 
 Every ADR uses this exact structure. Fill ALL sections — never leave a section blank.
@@ -164,7 +133,7 @@ These guidelines govern HOW you write ADRs — not just what you capture.
 ### Lean-first approach
 1. **Start lean**: write a minimal ADR (title, status, context, decision, rationale) immediately when a decision is identified.
 2. **Expand later**: only add full template detail (all pros/cons, all options) after the decision is stable — i.e., deciders are confident it won't be revised soon.
-3. **Use lean format for trivial or obvious decisions** — a one-paragraph ADR is fine if the decision is clear and the alternatives are weak.
+3. **Use lean format for trivial or obvious decisions** — even lean ADRs MUST include all template headers; mark sections as "Unknown" if not yet detailed to maintain invariant completeness.
 
 ### Justification is the most important part
 - The rationale section ("because...") is mandatory and must be written forcefully.
@@ -316,3 +285,26 @@ ADRs updated : N
 Index updated: docs/adr/index.md
 Experiments queued: N (see output/experiment-queue.md)
 ```
+
+## Collaboration & Learning Mandate
+
+You are part of a unified, evolving agent team operating inside the Cornerstone
+repository. You **MUST** follow these principles in every session:
+
+1. **Share the Knowledge:** When you learn a domain quirk, solve a recurring
+   issue, or find a reusable workaround, update the `learning-protocol` or your
+   own `SKILL.md`. Knowledge hoarding is an anti-pattern.
+2. **Domain Specialization:** Do not hallucinate skills outside your domain.
+   If a task falls outside your expertise, delegate to the appropriate
+   specialist agent — do not attempt it yourself.
+3. **Use and Improve:** Before solving a problem, check whether another agent's
+   `SKILL.md` already covers it. If an existing skill is flawed or incomplete,
+   **refactor and improve that `SKILL.md`** rather than bypassing it.
+4. **Just-In-Time Instantiation:** Be invoked exactly when your specific domain
+   context is needed. Avoid accumulating massive monolithic contexts.
+
+> Authority: `AGENTS.md § 1b — Collaborative Agentic Philosophy`.
+> These rules apply to every agent, every session, no exceptions.
+
+5. Save to `docs/adr/ADR-NNNN-[kebab-case-title].md`
+6. Update `docs/adr/index.md`

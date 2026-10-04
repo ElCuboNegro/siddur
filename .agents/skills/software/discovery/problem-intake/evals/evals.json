@@ -4,7 +4,7 @@
     {
       "id": 1,
       "prompt": "necesito entender cómo funciona el proceso de facturación de pedidos. los clientes se quejan de que a veces les llegan facturas con montos incorrectos pero no sabemos por qué.",
-      "expected_output": "Un Archaeology Brief completo con: (1) intent identificado como 'bug', (2) entry points descubiertos vía SQL MCP o marcados como TBD si no disponible, (3) business question precisa sobre el cálculo de montos en facturación, (4) handoff prompt listo para el software-archeologist.",
+      "expected_output": "Un Archaeology Brief completo con: (1) intent identificado como 'bug', (2) entry points descubiertos o marcados como TBD si SQUIT no disponible, (3) business question precisa sobre el cálculo de montos en facturación, (4) handoff prompt listo para el software-archeologist.",
       "files": [],
       "assertions": [
         {
@@ -48,7 +48,7 @@
     {
       "id": 2,
       "prompt": "quiero documentar el proceso de generación de reportes de inventario para migrarlo a dbt. tenemos varios stored procedures que calculan el stock disponible y las mermas pero no sé cuáles son los principales.",
-      "expected_output": "Un Archaeology Brief con: (1) intent identificado como 'migration' o 'documentation', (2) entry points relacionados con inventario/stock/mermas (vía SQL MCP o TBD), (3) scope acotado a reportes de inventario, (4) deliverable incluyendo ADR y mapa de dependencias.",
+      "expected_output": "Un Archaeology Brief con: (1) intent identificado como 'migration' o 'documentation', (2) entry points relacionados con inventario/stock/mermas (SQUIT o TBD), (3) scope acotado a reportes de inventario, (4) deliverable incluyendo ADR y mapa de dependencias.",
       "files": [],
       "assertions": [
         {

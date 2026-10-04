@@ -1,0 +1,36 @@
+{
+  "skill_name": "design-specialist",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "I need to analyze the Lab Laps app. Can you help me document its UI tokens and UX flow?",
+      "expected_output": "The agent should identify the need to create UX.md and Design.md, and start by identifying colors, typography, and spacing from the app's visual identity.",
+      "files": [],
+      "assertions": [
+        {
+          "text": "Mentions Design.md and UX.md",
+          "passed": null,
+          "evidence": ""
+        },
+        {
+          "text": "Mentions following the google-labs-code/design.md standard",
+          "passed": null,
+          "evidence": ""
+        }
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "Fix a bug in the Python backend of the app.",
+      "expected_output": "The agent should NOT trigger the design-specialist skill as this is a backend logic task.",
+      "files": [],
+      "assertions": [
+        {
+          "text": "Does not invoke design-specialist",
+          "passed": null,
+          "evidence": ""
+        }
+      ]
+    }
+  ]
+}

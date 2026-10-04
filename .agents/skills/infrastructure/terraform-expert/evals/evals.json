@@ -1,0 +1,64 @@
+[
+  {
+    "id": "tf-eval-001",
+    "description": "Cloud Run v2 Cloud SQL volume pattern",
+    "input": "Estoy conectando mi servicio de Cloud Run a Cloud SQL. Tengo esto en el template:\n\n```hcl\nresource \"google_cloud_run_service\" \"api\" {\n  metadata {\n    annotations = {\n      \"run.googleapis.com/cloudsql-instances\" = google_sql_database_instance.db.connection_name\n    }\n  }\n  template {\n    metadata {\n      annotations = {\n        \"run.googleapis.com/cloudsql-instances\" = google_sql_database_instance.db.connection_name\n      }\n    }\n    spec {\n      containers {\n        image = var.image\n        env {\n          name  = \"DB_CONN\"\n          value = google_sql_database_instance.db.connection_name\n        }\n      }\n    }\n  }\n}\n```\n\n¿Está correcto?",
+    "expected_behaviors": [
+      "Identifica que el código usa google_cloud_run_service (v1), que es el recurso deprecado",
+      "Indica que el patrón correcto para v2 es google_cloud_run_v2_service con volumes { cloud_sql_instance } y volume_mounts",
+      "Provee el snippet correcto con volumes { name = 'cloudsql' cloud_sql_instance { instances = [...] } } y volume_mounts { name = 'cloudsql' mount_path = '/cloudsql' }",
+      "Menciona que las annotations de v1 no deben usarse en el provider google v5"
+    ],
+    "tags": ["cloud-run-v2", "cloud-sql", "provider-v5"]
+  },
+  {
+    "id": "tf-eval-002",
+    "description": "Credenciales hardcodeadas en tfvars",
+    "input": "Mi pipeline de CI está fallando con 'Secret Manager: resource not found'. Agregué el valor directamente al tfvars para que funcione:\n\n```hcl\n# terraform.tfvars\ngithub_client_secret = \"ghp_real_secret_value_here\"\n```\n\n¿Cómo lo hago funcionar más rápido?",
+    "expected_behaviors": [
+      "Alerta inmediata: nunca hardcodear secrets en tfvars — pueden terminar en el state file (plaintext) y en git history",
+      "Explica el patrón correcto: crear google_secret_manager_secret + google_secret_manager_secret_version con el valor, luego referenciar via secret_key_ref en Cloud Run v2",
+      "Para secrets que dependen de procesos externos (GitHub OAuth app): usa placeholder secret sin versión y popula manualmente",
+      "No provee el 'fix rápido' solicitado — el fix correcto es usar Secret Manager"
+    ],
+    "tags": ["secrets", "security", "anti-pattern"]
+  },
+  {
+    "id": "tf-eval-003",
+    "description": "cpu_idle y timeout para servicios con índices en RAM",
+    "input": "Mi servicio Keystone (búsqueda BM25) se cae después del cold start con timeout. Tiene 2GB de RAM y carga un índice grande. Actualmente tengo:\n\n```hcl\nresources {\n  limits = { cpu = \"2\", memory = \"2Gi\" }\n  cpu_idle = true\n}\n```\n\nEl timeout del servicio es el default. ¿Qué ajusto?",
+    "expected_behaviors": [
+      "Identifica que cpu_idle = true es incorrecto para servicios con índices en RAM — el CPU se retira durante el procesamiento de requests",
+      "Recomienda cpu_idle = false para Keystone: el CPU debe permanecer activo mientras se sirven requests que usan el índice BM25",
+      "Indica que el timeout debe aumentarse a '300s' en el template para dar tiempo al cold start (rebuild del índice BM25 toma 60-90s)",
+      "Sugiere agregar startup_probe con initial_delay_seconds = 30 y failure_threshold = 10 para tolerar arranques lentos",
+      "Diferencia explícita con Lodge: Lodge sí puede usar cpu_idle = true porque es request-driven sin índices en RAM"
+    ],
+    "tags": ["cloud-run-v2", "cpu-idle", "timeout", "probes", "keystone"]
+  },
+  {
+    "id": "tf-eval-004",
+    "description": "Drift por recursos creados manualmente",
+    "input": "Alguien de mi equipo creó una Cloud SQL instance directamente en la consola de GCP en el proyecto dea-cornerstone-prj-dev (que está marcado como goog-terraform-provisioned: true). Ahora terraform plan quiere destruirla. ¿Qué hago?",
+    "expected_behaviors": [
+      "No aplica terraform destroy — la instancia puede tener datos",
+      "Explica el proceso de terraform import para traer el recurso bajo control de Terraform",
+      "Da el comando exacto: terraform import google_sql_database_instance.<nombre> projects/<project>/instances/<instance_name>",
+      "Indica que después del import hay que ajustar el código .tf para que coincida con la configuración real (terraform plan debe mostrar 0 cambios)",
+      "Prevención: mencionar el label goog-terraform-provisioned: true y la necesidad de que todos los cambios vayan por PR + plan aprobado"
+    ],
+    "tags": ["drift", "terraform-import", "state-management"]
+  },
+  {
+    "id": "tf-eval-005",
+    "description": "Workload Identity Federation — qué secretos configurar en GitHub",
+    "input": "Acabo de correr el bootstrap.sh y me imprimió dos valores: un resource name largo para el WIF provider y el email del service account. ¿Dónde y cómo los uso? ¿Necesito también descargar una JSON key del service account?",
+    "expected_behaviors": [
+      "No, no necesitas ni debes descargar una JSON key — el propósito de WIF es precisamente evitar service account keys en disco o en secrets",
+      "Los dos valores van como GitHub Actions secrets en el repositorio stoneworks-infra: WIF_PROVIDER (el resource name largo del provider) y WIF_SERVICE_ACCOUNT (el email del SA)",
+      "El workflow ya está configurado para usarlos via google-github-actions/auth@v2 con workload_identity_provider y service_account",
+      "Explica el flujo: GitHub OIDC token → WIF verifica audience y repository_owner → impersonación del terraform-ci SA → acceso a GCP sin keys"
+    ],
+    "tags": ["wif", "github-actions", "secrets", "keyless-auth"]
+  }
+]

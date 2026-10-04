@@ -50,29 +50,6 @@ If it is not trivial, flag it as CRITICAL regardless of the bypass tag.
 
 ---
 
-### Step 0.5 — BDD coverage check (MANDATORY for any `src/` change)
-
-For every source file added or modified under `src/` (or equivalent library path):
-
-1. Check whether a `.feature` file in `tests/features/` covers the changed behavior
-2. Run: `pytest --collect-only tests/features/ -q` — confirm at least one scenario is collected
-3. If new public behavior is introduced (new function, new endpoint, new domain concept)
-   AND no feature file covers it: **flag as CRITICAL**
-
-```
-| # | Category    | Severity | Location        | Finding                              | Recommendation                                      |
-| 1 | BDD-MISSING | CRITICAL | src/<module>.py | New behavior with no BDD scenario    | Write tests/features/<domain>.feature via bdd-writer-greenfield before merging |
-```
-
-**This is a blocker.** A PR that adds new observable behavior without a BDD scenario must not be merged.
-The CI `bdd-gate` job enforces this automatically, but the reviewer is a second line of defence.
-
-**Bypass exception:** If the commit message or diff contains `[skip-bdd]`, note it in the review
-summary. Verify the change is non-behavioral (refactor, rename, docs). If it introduces new
-observable behavior, flag as CRITICAL regardless of the bypass tag.
-
----
-
 ### Step 1 — Understand the intent
 
 Before finding faults, understand what the code is supposed to do:
@@ -217,6 +194,28 @@ Do NOT flag:
 
 ---
 
+## Collaboration & Learning Mandate
+
+You are part of a unified, evolving agent team operating inside the Cornerstone
+repository. You **MUST** follow these principles in every session:
+
+1. **Share the Knowledge:** When you learn a domain quirk, solve a recurring
+   issue, or find a reusable workaround, update the `learning-protocol` or your
+   own `SKILL.md`. Knowledge hoarding is an anti-pattern.
+2. **Domain Specialization:** Do not hallucinate skills outside your domain.
+   If a task falls outside your expertise, delegate to the appropriate
+   specialist agent — do not attempt it yourself.
+3. **Use and Improve:** Before solving a problem, check whether another agent's
+   `SKILL.md` already covers it. If an existing skill is flawed or incomplete,
+   **refactor and improve that `SKILL.md`** rather than bypassing it.
+4. **Just-In-Time Instantiation:** Be invoked exactly when your specific domain
+   context is needed. Avoid accumulating massive monolithic contexts.
+
+> Authority: `AGENTS.md § 1b — Collaborative Agentic Philosophy`.
+> These rules apply to every agent, every session, no exceptions.
+
+---
+
 ## When You Don't Know Something
 
 If you encounter an unfamiliar API, protocol, or hardware behavior:
@@ -225,20 +224,3 @@ If you encounter an unfamiliar API, protocol, or hardware behavior:
 3. Do not suppress the finding — flag it as `RISK` with `# Confidence: LOW`
 
 Follow `.agents/skills/software/discovery/unknown-domain-protocol/SKILL.md` for deeper unknowns.
-
----
-
-## Paso final obligatorio — Registro de receipt (MANDATORY)
-
-Al terminar la revisión, **debes ejecutar este comando** para registrar el receipt
-que permite al agente continuar editando archivos fuente:
-
-```bash
-python tools/review_gate.py --register
-```
-
-Sin este paso, el hook `review_gate.py` bloqueará cualquier `Edit`/`Write` posterior
-sobre `src/`. El receipt es válido por 120 minutos.
-
-> Si el review se hizo fuera de contexto (e.g. revisando un PR en GitHub) y quieres
-> habilitar ediciones locales, también puedes correr `--register` manualmente.

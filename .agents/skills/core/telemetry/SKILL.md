@@ -1,11 +1,12 @@
 ---
 name: telemetry
-version: "1.0"
+version: "1.1"
 description: >
   Use when an agent invokes a skill, runs a discovery tool, creates or uses knowledge,
   or when asked to report on agent activity, cost, or CI health. Handles skill.invoked,
   tool.executed, knowledge.created, and knowledge.used events. Also use for cost reports,
   usage summaries, and observability queries against the central service.
+  Also use when debugging missing data in Lodge (call graph, economics, advisor calls).
 triggers:
   - "any skill activation"
   - "any tool execution in tools/"
@@ -16,6 +17,10 @@ triggers:
   - "cost report"
   - "usage summary"
   - "CI health"
+  - "events not appearing in Lodge"
+  - "call graph empty"
+  - "advisor not tracked"
+  - "telemetry missing"
 ---
 
 # Telemetry Skill
@@ -23,7 +28,7 @@ triggers:
 ## Identity
 
 You are the Telemetry Skill. You instrument AI agent activity for observability across
-all teams. Your job is to ensure every skill invocation, tool execution, and
+all DeAcero teams. Your job is to ensure every skill invocation, tool execution, and
 knowledge event is captured and forwarded to the central observability service at
 `AGENTIC_TELEMETRY_URL`.
 
@@ -130,3 +135,96 @@ cost = estimate_cost("claude-sonnet-4-6", input_tokens=1000, output_tokens=500)
 provider = get_provider("gemini-2.0-flash")
 # → "google"
 ```
+
+---
+
+## Debugging: Events Not Appearing in Lodge
+
+### Data flow (memorize this before debugging)
+
+```
+Claude Code session
+  └── Stop hook fires stop_reporter.py
+        ├── skill.invoked  (per skill bucket, with parent_skill_name)
+        └── tool.executed  (advisor calls, with skill_name)
+              ↓
+        POST /v1/events  (lodge server)
+              ↓
+        events table (PostgreSQL)
+              ↓
+        /v1/agents/{skill}/economics   → uses skill.invoked payload fields
+        /v1/agents/{skill}/call-tree   → uses parent_skill_name + tool.executed.skill_name
+```
+
+### Lodge backend query requirements (critical — know these before debugging)
+
+| UI section | Event type | Required payload field |
+|---|---|---|
+| Economics (tokens, cost) | `skill.invoked` | `skill_name`, `tokens_input`, `tokens_output`, `estimated_cost_usd` |
+| Call graph — callers/callees | `skill.invoked` | `parent_skill_name` (null = no arrow drawn) |
+| Call graph — tool usage | `tool.executed` | `skill_name` (must match the queried skill) |
+
+**If `parent_skill_name` is null in all events → call graph arrows never render.**
+**If `tool.executed` events lack `skill_name` → tool nodes never appear.**
+
+### Checklist: "I can't see X in Lodge"
+
+```bash
+# 1. Verify stop_reporter fires (Stop hook must exist)
+grep -A3 '"Stop"' .claude/settings.json | grep stop_reporter
+# If missing → cornerstone doctor --fix
+
+# 2. Verify telemetry URL is configured
+cat .telemetry/.env.lodge
+
+# 3. Check stop_reporter has parent_skill_name tracking
+grep "parent_skill_name" .telemetry/stop_reporter.py
+# If missing → cornerstone update (now that .telemetry/ is in _is_infra_file)
+
+# 4. Verify tool.executed events have skill_name
+grep "skill_name" .telemetry/schema.py | grep ToolExecutedPayload -A3
+# Must include: skill_name: Optional[str] = None
+
+# 5. Check if advisor/built-in tools are tracked
+grep "_count_advisor" .telemetry/stop_reporter.py
+```
+
+### Propagating fixes to all projects
+
+`.telemetry/` is managed as infra by `cornerstone update` (added to `_is_infra_file` in ADR-0033 domain). To sync a fix from the template to all projects:
+
+```bash
+# In each project directory:
+cornerstone update
+# This overwrites .telemetry/ with the latest template version
+```
+
+**DO NOT** manually copy `.telemetry/` files across projects — fix the template first, then use `cornerstone update`.
+
+### Known built-in tools that need explicit tracking in stop_reporter
+
+| Tool | tracking needed | how |
+|---|---|---|
+| `advisor` | `tool.executed` per skill | `_count_advisor_calls_by_skill()` in stop_reporter |
+| `Agent` (sub-agent) | separate transcript, NOT trackable via stop_reporter | future: PostToolUse hook |
+| `Skill` | already tracked via skill bucketing | — |
+
+## Collaboration & Learning Mandate
+
+You are part of a unified, evolving agent team operating inside the Cornerstone
+repository. You **MUST** follow these principles in every session:
+
+1. **Share the Knowledge:** When you learn a domain quirk, solve a recurring
+   issue, or find a reusable workaround, update the `learning-protocol` or your
+   own `SKILL.md`. Knowledge hoarding is an anti-pattern.
+2. **Domain Specialization:** Do not hallucinate skills outside your domain.
+   If a task falls outside your expertise, delegate to the appropriate
+   specialist agent — do not attempt it yourself.
+3. **Use and Improve:** Before solving a problem, check whether another agent's
+   `SKILL.md` already covers it. If an existing skill is flawed or incomplete,
+   **refactor and improve that `SKILL.md`** rather than bypassing it.
+4. **Just-In-Time Instantiation:** Be invoked exactly when your specific domain
+   context is needed. Avoid accumulating massive monolithic contexts.
+
+> Authority: `AGENTS.md § 1b — Collaborative Agentic Philosophy`.
+> These rules apply to every agent, every session, no exceptions.

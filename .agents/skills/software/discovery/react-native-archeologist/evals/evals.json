@@ -1,0 +1,36 @@
+{
+  "skill_name": "react-native-archeologist",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "Analyze the index.android.bundle file and extract the application screens.",
+      "expected_output": "The agent should parse the bundle, identify React Navigation or Expo Router definitions, and generate ROUTES.md.",
+      "files": [],
+      "assertions": [
+        {
+          "text": "Mentions parsing index.android.bundle",
+          "passed": null,
+          "evidence": ""
+        },
+        {
+          "text": "Mentions creating ROUTES.md",
+          "passed": null,
+          "evidence": ""
+        }
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "Analyze this legacy COBOL mainframe code.",
+      "expected_output": "The agent should NOT trigger the react-native-archeologist skill as this is a COBOL task.",
+      "files": [],
+      "assertions": [
+        {
+          "text": "Does not invoke react-native-archeologist",
+          "passed": null,
+          "evidence": ""
+        }
+      ]
+    }
+  ]
+}

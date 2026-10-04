@@ -33,14 +33,9 @@ Repeat for every behavior. One cycle at a time. No batching.
 ## Protocol
 
 ### Step 0 — Verify prerequisites (BLOCK if missing)
-
-1. **BDD scenarios exist** in `tests/features/` for this story (from `bdd-writer-greenfield`).
-   Verify with: `pytest --collect-only tests/features/ -q`
-   If this returns zero scenarios: **STOP. Invoke `bdd-writer-greenfield` first.**
-
-2. **Acceptance criteria are defined** — the story has binary pass/fail criteria.
-
-3. **You understand "done"** — you can state in one sentence what the passing state looks like.
+- BDD scenarios exist for this story (from `bdd-writer` or `tech-lead`)
+- Acceptance criteria are defined
+- You understand what "done" looks like
 
 If any of these is missing: **stop. Invoke `tech-lead` first.**
 

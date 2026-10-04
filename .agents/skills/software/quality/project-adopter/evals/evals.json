@@ -1,0 +1,59 @@
+{
+  "skill_name": "project-adopter",
+  "eval_cases": [
+    {
+      "id": 1,
+      "prompt": "Run the project-adopter skill on this project.\n\n`cornerstone adopt . --plan-only` said:\n```\nlanguage:          python\nframeworks:        ['mcp']\nhas_tests:         True\nhas_adr:           False\narchitecture:      hexagonal\nrecommended:       mcp\n\nMigration Steps:\n  1. [LOW] Initialize ADR directory and document existing architecture decisions\n  2. [LOW] Initialize RTK for token-efficient session logs\n  3. [MEDIUM] Apply Cornerstone governance (cornerstone update)\n```\n\nThe repository looks like this:\n```\nlooker_agent/       <- the package (config.py, domain/, adapters/)\ntests/              <- adapters/, domain/\ndocs/adr/0001-arquitectura-proyecto-sandbox-looker.md\npyproject.toml      <- [tool.setuptools.packages.find] include = [\"looker_agent*\"]\n```\n`git status --porcelain` is empty and we are on `adopt/looker-agent`.",
+      "expected_output": "The skill should read the plan back and question step 1 before running anything: the ledger already has an ADR (docs/adr/0001-*.md), so has_adr: False is a detector false negative and that step would create a colliding record. It should also flag that the project keeps its package at the root, so the render must target looker_agent/ and not src/, and it must establish the test baseline before touching structure.",
+      "files": [],
+      "expectations": [
+        "Reads the migration steps back to the human and asks which to run instead of executing them",
+        "Identifies that step 1 is unnecessary because docs/adr/ already contains a numbered record, and warns about an ADR-0001 collision",
+        "Notes that the package lives at the repository root, so the rendered CI/pre-commit must point at looker_agent/ rather than src/",
+        "Runs the project's own test command first and records the result as the regression baseline",
+        "Does not graduate gates to ENFORCE and states that phase 5 is the human's decision"
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "Continue the adoption. I approved steps 2 and 3. After `cornerstone update` the tree now has:\n\n```\nsrc/looker_agent/server.py          <- new\nsrc/looker_agent/domain/service.py  <- new\nlooker_agent/                       <- the real package, untouched\n.github/workflows/ci.yml            <- rewritten\n```\n\nand ci.yml now runs:\n```yaml\n      - name: Lint\n        run: ruff check src/ tests/\n      - name: Type check\n        run: mypy src/\n      - name: Run unit tests\n        run: pytest tests/unit/ -v\n```\n\nThe baseline before the update was `134 passed`. Now `pytest tests/` reports `1 failed, 133 passed` and 3 collection errors.",
+      "expected_output": "The skill must stop and report rather than fix forward. The render produced a duplicate package under src/ and re-pointed CI at it, so the gates would go green on code nobody imports; and the baseline regressed, which by rule 1 means revert-and-report. It should name the upstream defect rather than editing managed files or silencing hooks.",
+      "files": [],
+      "expectations": [
+        "Refuses to continue and reports, instead of trying to fix the failing tests forward",
+        "Identifies the duplicate package under src/ as the defect: the real package is at the root and the render scaffolded a second one beside it",
+        "States that CI is now linting and type-checking a tree with no real code, so a green CI would be meaningless",
+        "Compares against the recorded baseline (134 passed) and treats the regression as blocking",
+        "Does not modify Cornerstone-managed files or use --no-verify / skip tokens to get past the failure",
+        "Recommends reporting the render defect upstream and does not graduate gates"
+      ]
+    },
+    {
+      "id": 3,
+      "prompt": "Run the project-adopter skill. This project is a Python service with `src/billing/` and NO tests at all — `pytest` collects 0 items. The phase-2 plan proposes:\n\n```\n  1. [HIGH] Refactor to hexagonal architecture (split domain from adapters)\n  2. [MEDIUM] Apply Cornerstone governance (cornerstone update)\n```\n\nThe team wants this done today.",
+      "expected_output": "The skill must refuse step 1 until a characterization baseline exists, and run the Missing Tests Protocol in order: software-archeologist, then bdd-writer producing hypothesis feature files, then characterization-tester to verify them against the real system. Only with a green suite does the refactor become reversible.",
+      "files": [],
+      "expectations": [
+        "Refuses to run the [HIGH] hexagonal refactor while there is no test baseline, and says why in terms of reversibility rather than policy",
+        "Delegates to software-archeologist first to map the execution graph and produce the findings ledger",
+        "Then delegates to bdd-writer to write .feature files marked as hypothesis",
+        "Then delegates to characterization-tester to classify each scenario as VERIFIED, CONFLICT or UNTESTABLE against the real system",
+        "Explains that a CONFLICT is a discovery about undocumented behaviour, not a test failure to be silenced",
+        "Does not accept schedule pressure as a reason to restructure code with no oracle"
+      ]
+    },
+    {
+      "id": 4,
+      "prompt": "The adoption is done and the suite is green (134 passed, same as baseline). The first governed commit fails:\n\n```\nruff ......................... Failed\nFound 11 errors. No fixes available (2 hidden fixes...)\n.telemetry/client.py:72:9: SIM105 ...\ntools/adr_gate.py:708:5: SIM105 ...\ntools/enforce_gitflow.py:22:9: SIM102 ...\n```\n\nAll 11 findings are in .telemetry/ and tools/. None are in the project's own code. What do you do?",
+      "expected_output": "The skill should recognise these as Cornerstone-managed files, refuse to edit them (a local edit is drift the next update reverts) and refuse to silence the hook. It should report the defect upstream with the evidence, record it as a finding, and state that the project cannot produce its first governed commit until the starter ships those trees clean.",
+      "files": [],
+      "expectations": [
+        "Identifies .telemetry/ and tools/ as upstream-managed rather than project code",
+        "Refuses to edit those files locally, explaining that the next cornerstone update reverts the change",
+        "Refuses to add an exclusion or use a skip token to get the commit through",
+        "Records the finding in docs/knowledge/FINDINGS.md and recommends reporting it upstream with the exact ruff output",
+        "States clearly that the adoption is blocked on an upstream fix rather than declaring the adoption complete"
+      ]
+    }
+  ]
+}

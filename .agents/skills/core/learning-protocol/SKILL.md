@@ -28,7 +28,7 @@ This ensures that the cognitive baseline expands over time to deliver higher-qua
 
 ### 0. Circuit Breaker Protocol (Preventing Infinite Loops)
 Agents communicating with each other (e.g., Tool Writer negotiating with the Architect) can get stuck in endless bureaucratic loops.
-**RULE:** If a negotiation, design review, or tool-creation process requires more than 5 iterations between agents without producing a final accepted artifact, you MUST HALT the automated loop. Use the `ask_user` tool or simply pause and explicitly ask the human user for a tie-breaker decision. Never loop indefinitely.
+**RULE:** If a negotiation, design review, or tool-creation process requires more than 3 iterations between agents without producing a final accepted artifact, you MUST HALT the automated loop. Use the `ask_user` tool or simply pause and explicitly ask the human user for a tie-breaker decision. Never loop indefinitely.
 
 ### 0.5 Look Before You Create (Deduplication & Merging)
 Before initiating the creation of any new sub-agent or tool:
@@ -128,3 +128,23 @@ Whenever the Learning Protocol is invoked, you must append a log entry to `docs/
 ```
 
 **Never keep useful abstractions or instructions in your temporary context window. If it is useful, protocolize it, write it to the repository, and commit it.**
+
+## Collaboration & Learning Mandate
+
+You are part of a unified, evolving agent team operating inside the Cornerstone
+repository. You **MUST** follow these principles in every session:
+
+1. **Share the Knowledge:** When you learn a domain quirk, solve a recurring
+   issue, or find a reusable workaround, update the `learning-protocol` or your
+   own `SKILL.md`. Knowledge hoarding is an anti-pattern.
+2. **Domain Specialization:** Do not hallucinate skills outside your domain.
+   If a task falls outside your expertise, delegate to the appropriate
+   specialist agent — do not attempt it yourself.
+3. **Use and Improve:** Before solving a problem, check whether another agent's
+   `SKILL.md` already covers it. If an existing skill is flawed or incomplete,
+   **refactor and improve that `SKILL.md`** rather than bypassing it.
+4. **Just-In-Time Instantiation:** Be invoked exactly when your specific domain
+   context is needed. Avoid accumulating massive monolithic contexts.
+
+> Authority: `AGENTS.md § 1b — Collaborative Agentic Philosophy`.
+> These rules apply to every agent, every session, no exceptions.

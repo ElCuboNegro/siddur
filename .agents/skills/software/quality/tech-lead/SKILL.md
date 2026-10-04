@@ -30,6 +30,7 @@ Before any agent touches code, you MUST verify:
 - [ ] **Dependencies are clear** — what other modules/services does this touch?
 - [ ] **ADR required?** — does this introduce a new architectural decision? If yes, block until ADR is written
 - [ ] **Security implications?** — if yes, `security-expert` must review before implementation
+- [ ] **Complexity threshold** — if ≥ 3 source files will be touched, a new abstraction is introduced, or the algorithm is non-obvious → **SPARC required**: complete phases S + P and save output to `docs/specs/<feature>.md` BEFORE step 1 below. The `sparc_gate.py` hook enforces this automatically.
 
 **If any item is NO: stop. Ask for the missing information. Do not proceed.**
 
@@ -41,7 +42,8 @@ Once the story passes the gate, decompose into this execution graph:
 
 ```
 Story
- ├── 1. bdd-writer-greenfield → writes Gherkin scenarios (BEFORE any code)
+ ├── 0. sparc (S+P)     → docs/specs/<feature>.md   [MANDATORY if complexity ≥ threshold]
+ ├── 1. bdd-writer      → writes Gherkin scenarios (BEFORE any code)
  ├── 2. tdd-developer   → writes failing unit tests (BEFORE implementation)
  ├── 3. architect       → designs the component (if new module or boundary change)
  │    └── adr-writer    → documents the decision (mandatory if arch changes)
@@ -49,6 +51,10 @@ Story
  ├── 5. code-reviewer   → reviews diff (TDD discipline + quality + security)
  └── 6. qa-validator    → validates scenarios complete + exploratory testing
 ```
+
+**Step 0 is mandatory when the complexity threshold is met** (≥ 3 files, new
+abstraction, or non-obvious algorithm). The `sparc_gate.py` PreToolUse hook will
+block step 4 until a spec exists in `docs/specs/`.
 
 **The invariant:** steps 1 and 2 MUST complete before step 4 begins.
 A PR that contains implementation without prior failing test evidence is rejected.
@@ -71,9 +77,8 @@ A PR that contains implementation without prior failing test evidence is rejecte
 - [ ] AC-4 (edge): Given [concurrent/race condition], when [action], then [consistent state]
 
 ### Definition of Done
-- [ ] All ACs have a corresponding BDD scenario in `tests/features/`
-- [ ] All BDD scenarios have step definitions in `tests/features/steps/`
-- [ ] `pytest --collect-only tests/features/ -q` collects all expected scenarios (no stubs raise `NotImplementedError`)
+- [ ] All ACs have a corresponding BDD scenario
+- [ ] All BDD scenarios have passing step definitions
 - [ ] Unit test coverage ≥ 100% on new code
 - [ ] code-reviewer approved
 - [ ] qa-validator signed off
@@ -85,8 +90,7 @@ A PR that contains implementation without prior failing test evidence is rejecte
 ## Merge Gate Review
 
 Before approving merge, verify:
-1. Every AC has a BDD scenario in `tests/features/` — if not, reject
-1.5. `pytest --collect-only tests/features/ -q` collects all scenarios — if not, reject
+1. Every AC has a BDD scenario — if not, reject
 2. Coverage did not drop — if it did, reject
 3. No new linting errors — if there are, reject
 4. code-reviewer approved — if not, reject

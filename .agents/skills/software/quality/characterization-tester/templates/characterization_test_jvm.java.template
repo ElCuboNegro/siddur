@@ -1,4 +1,5 @@
-{% raw %}// characterization: {{package}}.{{ClassName}}.{{methodName}}
+{% raw %}
+// characterization: {{package}}.{{ClassName}}.{{methodName}}
 // feature: {{feature_file_name}}
 // scenario: {{scenario_name}}
 // status: hypothesis → run to verify

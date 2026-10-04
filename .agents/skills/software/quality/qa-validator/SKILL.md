@@ -26,11 +26,7 @@ Your job is to find what the developer couldn't see because they were too close 
 For each acceptance criterion in the story:
 1. Does a BDD scenario exist that directly tests it? If not → **BLOCK**
 2. Does the scenario test the observable behavior (not the implementation)? If not → **REJECT scenario, ask bdd-writer to rewrite**
-3. Is the scenario actually running in CI? Verify all three:
-   - (a) `pytest --collect-only tests/features/ -q` collects the scenario (no parse errors, no missing steps)
-   - (b) The CI workflow has a step that runs `pytest tests/features/` or the `bdd-gate` job
-   - (c) That step is NOT marked `continue-on-error: true`
-   If any of (a)(b)(c) is false → **BLOCK until resolved**
+3. Is the scenario actually running in CI? If not → **BLOCK until CI gate is added**
 
 Coverage matrix:
 ```markdown

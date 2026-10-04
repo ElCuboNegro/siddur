@@ -11,6 +11,8 @@ description: >
 allowed-tools:
   - "Read"
   - "Write"
+  - "mcp__squit__search_objects"
+  - "mcp__squit__get_object_definition"
 ---
 
 # Problem Intake — Archaeology Brief Generator
@@ -65,26 +67,27 @@ If the intent is ambiguous, infer the most likely type and confirm with the user
 
 ---
 
-### Step 2: SQL Discovery
+### Step 2: SQUIT Discovery
 
-Attempt to discover entry points automatically using any SQL search MCP or tool configured for this project.
+Attempt to discover entry points automatically. SQUIT indexes 5.7M SQL objects with semantic search.
 
-**If a SQL search MCP is available:**
+**If SQUIT MCP is available:**
 
 1. Formulate 2–3 semantic search queries based on the business question.
-   - Use business language, not technical terms.
+   - Use business language, not technical terms. SQUIT understands meaning.
    - Example: for "billing process" → search "facturación pedidos", "generar factura", "proceso cobro"
-2. Call the MCP's search tool for each query.
+2. Call `mcp__squit__search_objects` for each query.
 3. Filter results by relevance — focus on Stored Procedures, Views, and key Tables.
 4. Group candidates by type and estimated relevance (High / Medium / Low).
-5. For the top 3–5 candidates, optionally call the definition tool to confirm they are genuine entry points.
+5. For the top 3–5 candidates, optionally call `mcp__squit__get_object_definition` to confirm
+   they are genuine entry points (not just peripheral references).
 
-**If no SQL MCP is available:**
+**If SQUIT MCP is unavailable:**
 
 Note this clearly in the brief and list the entry points as `[TBD — requires manual investigation]`.
 Add a tip at the end:
 ```
-💡 Tip: Configure a SQL search MCP to enable automatic entry-point discovery.
+💡 Tip: Configure SQUIT MCP to enable automatic entry-point discovery from 5.7M indexed SQL objects.
 ```
 
 ---
@@ -186,3 +189,23 @@ software-archeologist can start immediately without asking clarifying questions.
 - **Scope down aggressively** — an unbounded request produces an unbounded analysis. If the user hasn't scoped it, propose a reasonable boundary and confirm.
 - **Preserve business language** — the business question should be readable by a non-technical stakeholder.
 - **One brief per session** — if the user has multiple unrelated questions, generate one brief per question and suggest running them as separate archaeology sessions.
+
+## Collaboration & Learning Mandate
+
+You are part of a unified, evolving agent team operating inside the Cornerstone
+repository. You **MUST** follow these principles in every session:
+
+1. **Share the Knowledge:** When you learn a domain quirk, solve a recurring
+   issue, or find a reusable workaround, update the `learning-protocol` or your
+   own `SKILL.md`. Knowledge hoarding is an anti-pattern.
+2. **Domain Specialization:** Do not hallucinate skills outside your domain.
+   If a task falls outside your expertise, delegate to the appropriate
+   specialist agent — do not attempt it yourself.
+3. **Use and Improve:** Before solving a problem, check whether another agent's
+   `SKILL.md` already covers it. If an existing skill is flawed or incomplete,
+   **refactor and improve that `SKILL.md`** rather than bypassing it.
+4. **Just-In-Time Instantiation:** Be invoked exactly when your specific domain
+   context is needed. Avoid accumulating massive monolithic contexts.
+
+> Authority: `AGENTS.md § 1b — Collaborative Agentic Philosophy`.
+> These rules apply to every agent, every session, no exceptions.
