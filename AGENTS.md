@@ -2,7 +2,7 @@
 **READ THIS FIRST. Every agent, every session, no exceptions.**
 
 ## 1. Project Mandate
-* **Repository:** `github.com/myuser/siddur`
+* **Repository:** `github.com/ElCuboNegro/siddur`
 * **Description:** Legacy system archaeology project — reverse-engineer, document, and modernize
 * **Core Objective:** Reverse-engineer the legacy system bottom-up, document every behavior as executable Gherkin specs, and hand off a complete behavioral contract to the forward-TDD team.
 
