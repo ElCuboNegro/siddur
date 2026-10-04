@@ -1,0 +1,3 @@
+# Runtime telemetry markers — never committed (ADR-0079 phase marker, Lodge-issued env)
+.phase
+.env.lodge

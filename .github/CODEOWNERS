@@ -1,0 +1,45 @@
+# CODEOWNERS — review routing
+#
+# ⚠️  GitHub SILENTLY IGNORES any owner that lacks write access to this repository.
+#     Adding a handle here does nothing until that user (or team) is a collaborator.
+#     Verify with:  gh api repos/<owner>/<repo>/collaborators/<user> -i
+#     A 404 means the line below is inert.
+#
+# Prefer teams (@org/team) over individuals — they survive people changing roles.
+# Last matching pattern wins, so order matters.
+
+# ── Default ───────────────────────────────────────────────────────────────────
+# Project owner plus the Cornerstone platform owners, who review anything not matched
+# by a more specific rule below.
+#
+# ⚠️  PUBLIC / OSS PROJECTS: remove the two platform handles from this line. They are
+#     internal Grupo Deacero accounts and must not appear in a public repository.
+*                               @myuser @jalban-ext_deacero @ktouma_deacero
+
+# ── Guardrails and gates ──────────────────────────────────────────────────────
+# Gate scripts are enforcement logic: changing one changes what the whole project is
+# allowed to do. These should never be self-merged.
+/tools/                         @myuser
+/.agents/AGENTS.gates.md        @myuser
+/.claude/settings.json          @myuser
+/.gemini/                       @myuser
+
+# ── Agent skills and protocols ────────────────────────────────────────────────
+# SKILL.md files are executable prompt logic (ADR-0021), not documentation — a change
+# here alters agent behaviour on every session and is subject to the ADR gate.
+/.agents/                       @myuser
+
+# ── Infrastructure and CI/CD ──────────────────────────────────────────────────
+/.github/workflows/             @myuser
+/.github/dependabot.yml         @myuser
+/Dockerfile                     @myuser
+/docker-compose.yml             @myuser
+/pyproject.toml                 @myuser
+
+# ── Architecture ──────────────────────────────────────────────────────────────
+# ADRs are immutable once accepted: supersede, never edit.
+/docs/adr/   @myuser
+
+# ── Knowledge base ────────────────────────────────────────────────────────────
+# The learning gate reads FINDINGS.md; it is shared state, not personal notes.
+/docs/knowledge/                @myuser

@@ -1,0 +1,28 @@
+[project]
+name = "siddur"
+version = "0.1.0"
+description = "Legacy system archaeology project — reverse-engineer, document, and modernize"
+requires-python = ">=3.11"
+dependencies = []
+
+[project.optional-dependencies]
+dev = [
+    "black>=24.0",
+    "diff-cover>=9.0",
+    "pre-commit>=3.7",
+    "pytest>=8.0",
+    "pytest-bdd>=7.0",
+    "ruff>=0.4",
+]
+
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.backends.legacy:build"
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = ["--strict-markers"]
+
+[tool.ruff]
+line-length = 100
+target-version = "py311"

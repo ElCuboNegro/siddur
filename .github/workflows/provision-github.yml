@@ -1,0 +1,101 @@
+name: Provision GitHub Settings
+
+on:
+  workflow_dispatch:
+
+# The admin work is done by an installation token minted from the
+# cornerstone-repo-creator GitHub App (administration: write) — GITHUB_TOKEN
+# cannot set branch protection, and a PAT is unnecessary.
+permissions:
+  contents: read
+
+jobs:
+  provision:
+    name: Provision Branch Protection
+    runs-on: ubuntu-latest
+    steps:
+      # app-id + private key are org-level (available to every repo): the
+      # CORNERSTONE_APP_ID variable and CORNERSTONE_APP_PRIVATE_KEY secret.
+      - name: Mint GitHub App token
+        uses: actions/create-github-app-token@v1
+        id: app-token
+        with:
+          app-id: ${{ vars.CORNERSTONE_APP_ID }}
+          private-key: ${{ secrets.CORNERSTONE_APP_PRIVATE_KEY }}
+
+      - uses: actions/checkout@v4
+        with:
+          token: ${{ steps.app-token.outputs.token }}
+
+      - name: Create staging branch
+        env:
+          GH_TOKEN: ${{ steps.app-token.outputs.token }}
+        run: |
+          if git ls-remote --heads origin staging | grep -q staging; then
+            echo "staging branch already exists — skipping"
+          else
+            git checkout -b staging
+            git push origin staging
+            echo "staging branch created"
+          fi
+
+      - name: Set branch protection on main
+        env:
+          GH_TOKEN: ${{ steps.app-token.outputs.token }}
+        run: |
+          gh api "repos/${{ github.repository }}/branches/main/protection" \
+            --method PUT \
+            --input - <<'EOF'
+          {
+            "required_status_checks": {
+              "strict": true,
+              "contexts": [
+                "Gitflow Gate",
+                "Semver Gate",
+                "Commit Gate",
+                "BDD Gate — src changes require feature files",
+                "test"
+              ]
+            },
+            "enforce_admins": true,
+            "required_pull_request_reviews": {
+              "required_approving_review_count": 0,
+              "dismiss_stale_reviews": true
+            },
+            "restrictions": null
+          }
+          EOF
+          echo "Branch protection applied to main"
+
+      - name: Set branch protection on staging
+        env:
+          GH_TOKEN: ${{ steps.app-token.outputs.token }}
+        run: |
+          # Gates run on every PR to staging (ci.yml) and must block a red merge —
+          # enforce_admins stays false so the staging->main release flow can still
+          # be driven by an admin. Force pushes disabled.
+          gh api "repos/${{ github.repository }}/branches/staging/protection" \
+            --method PUT \
+            --input - <<'EOF'
+          {
+            "required_status_checks": {
+              "strict": true,
+              "contexts": [
+                "Gitflow Gate",
+                "Semver Gate",
+                "Commit Gate",
+                "BDD Gate — src changes require feature files",
+                "test",
+                "Schema Drift — ORM vs migrations"
+              ]
+            },
+            "enforce_admins": false,
+            "required_pull_request_reviews": {
+              "required_approving_review_count": 0,
+              "dismiss_stale_reviews": true
+            },
+            "restrictions": null,
+            "allow_force_pushes": false
+          }
+          EOF
+          echo "Branch protection applied to staging"

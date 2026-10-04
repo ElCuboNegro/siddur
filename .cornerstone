@@ -1,0 +1,43 @@
+{
+  "starter": "archaeology",
+  "capabilities": [
+    "server",
+    "cli"
+  ],
+  "cookiecutter_vars": {
+    "project_name": "siddur",
+    "project_slug": "siddur",
+    "package_name": "siddur",
+    "github_username": "myuser",
+    "description": "Legacy system archaeology project \u2014 reverse-engineer, document, and modernize",
+    "author": "Your Organization",
+    "python_version": "3.11",
+    "adr_path": "docs/adr",
+    "library_path": "src",
+    "forward_team_repo": "",
+    "graph_service_url": "",
+    "agentic_telemetry_url": "",
+    "enable_rtk": true,
+    "enable_kdb_recall": true,
+    "_copy_without_render": [
+      ".agents/skills/*",
+      ".github/workflows/*"
+    ],
+    "_template": "C:\\Users\\ROGSTR~1\\AppData\\Local\\Temp\\schematics-starter-8t5svexa\\archaeology",
+    "_output_dir": "C:\\Users\\ROG STRIX\\Desktop\\work\\siddur",
+    "_repo_dir": "C:\\Users\\ROGSTR~1\\AppData\\Local\\Temp\\schematics-starter-8t5svexa\\archaeology",
+    "_checkout": null
+  },
+  "agents_repo": "https://github.com/grupodeacero/cornerstone-agents",
+  "agents_ref": "main",
+  "cornerstone_version": "0.13.0",
+  "template_version": "0.13.0",
+  "generated_at": "2026-10-04T13:20:50.035549Z",
+  "rtk": {
+    "enabled": false,
+    "pinned_version": null,
+    "scope": "project",
+    "install_method": null,
+    "install_dest": "~/.local/bin/rtk"
+  }
+}

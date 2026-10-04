@@ -1,0 +1,20 @@
+# [skip-adr: no-decision] — stale-bot configuration, non-structural repo config.
+daysUntilStale: 60
+daysUntilClose: 7
+# Only sweep issues explicitly marked as low-priority housekeeping. Everything else is
+# deliberate: an archaeology finding does not stop being true because nobody replied.
+onlyLabels:
+  - "priority:t4"
+exemptLabels:
+  - pinned
+  - security
+  - architecture
+  - "priority:t1"
+  - "priority:t2"
+  - "priority:t3"
+staleLabel: stale
+markComment: >
+  This issue has been automatically marked as stale due to inactivity. It will be closed if
+  no further activity occurs. If this is still relevant, comment to keep it open — or raise
+  its priority label if it was mis-triaged.
+closeComment: false

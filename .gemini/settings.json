@@ -1,0 +1,62 @@
+{
+  "security": {
+    "toolSandboxing": false
+  },
+  "permissions": {
+    "defaultMode": "default"
+  },
+  "hooks": {
+    "UserPromptSubmit": [
+      {
+        "matcher": "",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "cornerstone hook --optional tools/sync_agents.sh"
+          }
+        ]
+      }
+    ],
+    "BeforeTool": [
+      {
+        "matcher": "run_shell_command",
+        "hooks": [
+          {
+            "type": "command",
+            "statusMessage": "GitOps Gate — checking for forbidden git operations...",
+            "command": "cornerstone gitops-gate"
+          }
+        ]
+      },
+      {
+        "matcher": "write_file|replace",
+        "hooks": [
+          {
+            "type": "command",
+            "statusMessage": "ADR Gate — checking architectural mandate...",
+            "command": "cornerstone hook --env CORNERSTONE_ADR_PATH=docs/adr tools/adr_gate.py"
+          }
+        ]
+      }
+    ],
+    "SessionStart": [
+      {
+        "matcher": "*",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "cornerstone hook bootstrap"
+          },
+          {
+            "type": "command",
+            "command": "cornerstone hook --optional upgrade --check"
+          },
+          {
+            "type": "command",
+            "command": "cornerstone hook tools/session_start.py"
+          }
+        ]
+      }
+    ]
+  }
+}

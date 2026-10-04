@@ -1,0 +1,51 @@
+{
+  "skill_name": "bdd-writer-greenfield",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "Write BDD feature files for this acceptance criterion:\n**Story:** As an API user, I want to retrieve an order by ID, so that I can display its details.\n**AC-1:** Given a valid order ID, when the client requests GET /orders/{id}, then the response is 200 with the order payload.\n**AC-2:** Given an order ID that does not exist, when the client requests GET /orders/{id}, then the response is 404 with an error message.\n**AC-3:** Given an unauthenticated request, when the client requests GET /orders/{id}, then the response is 401.",
+      "expected_output": "A feature file at tests/features/order_retrieval.feature with: Feature declaration, and at least 3 scenarios (one per AC). Each scenario uses Given/When/Then with domain language (not implementation details). Plus a step stub file at tests/features/steps/test_order_retrieval.py with pytest-bdd @given/@when/@then decorators and pass stubs. Output must NOT reference internal function names.",
+      "files": [],
+      "assertions": [
+        {
+          "text": "Feature file placed at tests/features/ (not output/bdd/)",
+          "passed": null,
+          "evidence": ""
+        },
+        {
+          "text": "Three scenarios covering AC-1 (200), AC-2 (404), AC-3 (401)",
+          "passed": null,
+          "evidence": ""
+        },
+        {
+          "text": "Step stubs use pytest-bdd @given/@when/@then decorators",
+          "passed": null,
+          "evidence": ""
+        },
+        {
+          "text": "No implementation code in the step stubs (only pass or TODOs)",
+          "passed": null,
+          "evidence": ""
+        }
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "You are asked to write BDD scenarios for a hardware NFC reader module. The request comes from the bdd-writer-greenfield skill.",
+      "expected_output": "The skill should recognize this is an archaeology/hardware domain and redirect: 'This request involves hardware/legacy domain analysis. Use bdd-writer (the archaeology variant) instead. bdd-writer-greenfield is for new feature development driven by acceptance criteria.'",
+      "files": [],
+      "assertions": [
+        {
+          "text": "Skill correctly identifies this is out of scope for bdd-writer-greenfield",
+          "passed": null,
+          "evidence": ""
+        },
+        {
+          "text": "Skill redirects to bdd-writer (archaeology variant) rather than attempting to write hardware scenarios",
+          "passed": null,
+          "evidence": ""
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,129 @@
+{
+  "permissions": {
+    "defaultMode": "default"
+  },
+  "hooks": {
+    "PreToolUse": [
+      {
+        "matcher": "Bash",
+        "hooks": [
+          {
+            "type": "command",
+            "statusMessage": "GitOps Gate — checking for forbidden git operations...",
+            "command": "cornerstone hook gitops-gate"
+          }
+        ]
+      },
+      {
+        "matcher": "Edit|Write",
+        "hooks": [
+          {
+            "type": "command",
+            "statusMessage": "ADR Gate — checking architectural mandate...",
+            "command": "cornerstone hook --env CORNERSTONE_ADR_PATH=docs/adr tools/adr_gate.py"
+          }
+        ]
+      },
+      {
+        "matcher": "Edit|MultiEdit|Write",
+        "hooks": [
+          {
+            "type": "command",
+            "statusMessage": "TDD Gate — verifying test coverage exists...",
+            "command": "cornerstone hook .claude/hooks/tdd-gate.sh"
+          }
+        ]
+      },
+      {
+        "matcher": "Grep|Glob|Task",
+        "hooks": [
+          {
+            "type": "command",
+            "statusMessage": "KDB-first Gate — checking corpus consultation (ADR-0126)...",
+            "command": "cornerstone hook --optional --env-default KDB_FIRST_MODE=hard tools/kdb_first_gate.py --check"
+          }
+        ]
+      }
+    ],
+    "UserPromptSubmit": [
+      {
+        "matcher": "",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "cornerstone hook --optional tools/sync_agents.sh"
+          }
+        ]
+      },
+      {
+        "matcher": "",
+        "hooks": [
+          {
+            "type": "command",
+            "statusMessage": "KDB recall — fetching relevant org knowledge...",
+            "command": "cornerstone hook --optional kdb recall --prompt-stdin"
+          }
+        ]
+      }
+    ],
+    "SessionStart": [
+      {
+        "matcher": "*",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "cornerstone hook agents-context",
+            "timeout": 30
+          },
+          {
+            "type": "command",
+            "command": "cornerstone hook bootstrap"
+          },
+          {
+            "type": "command",
+            "command": "cornerstone hook --optional upgrade --check"
+          },
+          {
+            "type": "command",
+            "command": "cornerstone hook tools/session_start.py"
+          }
+        ]
+      }
+    ],
+    "Stop": [
+      {
+        "matcher": "*",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "cornerstone hook .telemetry/stop_reporter.py",
+            "statusMessage": "Reporting session cost to Lodge..."
+          }
+        ]
+      }
+    ],
+    "PostToolUse": [
+      {
+        "matcher": "Edit",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "cornerstone hook --optional format-changed"
+          }
+        ]
+      },
+      {
+        "matcher": "mcp__keystone__.*",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "cornerstone hook tools/kdb_first_gate.py --mark"
+          }
+        ]
+      }
+    ]
+  },
+  "enabledPlugins": {
+    "siddur-skills@local": true
+  }
+}

@@ -1,0 +1,15 @@
+# [skip-adr: no-decision] — GitHub issue-form routing config, non-structural repo metadata.
+blank_issues_enabled: false
+contact_links:
+  - name: Gate recipes — blocked by a hook?
+    url: https://github.com/myuser/siddur/blob/main/.agents/AGENTS.gates.md
+    about: Read this before concluding you are blocked. Only "decision":"deny" is a real block.
+  - name: Architecture Decision Records
+    url: https://github.com/myuser/siddur/discussions/categories/adr
+    about: ADRs live in Discussions. Create one with `cornerstone adr new "<title>"`.
+  - name: Findings ledger
+    url: https://github.com/myuser/siddur/blob/main/docs/knowledge/FINDINGS.md
+    about: Reusable learnings are recorded here (F-XXX) — check before filing.
+  - name: Security concern
+    url: https://github.com/myuser/siddur/security/advisories/new
+    about: Report privately. Never open a public issue for a live exposure or a leaked secret.

@@ -1,0 +1,14 @@
+# [skip-adr: no-decision] — bot configuration, non-structural repo config.
+#
+# Developer Certificate of Origin (https://developercertificate.org/) sign-off enforcement.
+#
+# ⚠️  INERT UNTIL THE DCO GITHUB APP IS INSTALLED on the org/repo. This file is only read
+#     by that app; on its own it enforces nothing.
+#
+# `members: false` exempts organisation members from the sign-off requirement — the same
+# setting Kedro uses. Since this is a private corporate repository with no external
+# contributors, that makes the check a no-op today. It is kept for parity with the
+# ecosystem baseline and so the policy is already in place if the repo ever takes
+# outside contributions.
+require:
+  members: false

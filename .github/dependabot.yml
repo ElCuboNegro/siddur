@@ -1,0 +1,25 @@
+# [skip-adr: no-decision] — dependency-update bot configuration, non-structural repo config
+# (same category as .pre-commit-config.yaml / mkdocs.yml, already exempt under ADR-0124).
+version: 2
+updates:
+  - package-ecosystem: "pip"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+    labels:
+      - "dependencies"
+    # [skip-adr: no-decision] — removing an incorrect `ignore: dependency-name: "*"` block
+    # that would have silently disabled all pip updates. Mechanical fix, no design decision.
+    # NOTE: `directory: "/"` scans root manifests only, so the legacy sources under input/
+    # are never picked up — which is what we want (Never Destroy: input/ is READ-ONLY).
+    # Do NOT add an input/ directory entry here.
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    schedule:
+      interval: "monthly"
+    labels:
+      - "github_actions"
+    groups:
+      actions:
+        patterns:
+          - "*"
